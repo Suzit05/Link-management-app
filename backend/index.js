@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const dotenv = require("dotenv")
 dotenv.config();
+const mongoose = require("mongoose")
 const errorHandler = require("./middleware/errorHandler")
 const userRoutes = require("./routes/user")
 const port = process.env.port || 3000;
@@ -23,4 +24,9 @@ app.get("/", async (req, res, next) => {
 
 app.listen(port, () => {
     console.log(`listening on ${port}⚡`)
+    mongoose.connect(process.env.MONGODB_URI).then(() => {
+        console.log("mongodb connected")
+    }).catch((err) => {
+        console.log(err)
+    })
 })
