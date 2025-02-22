@@ -2,7 +2,13 @@ const mongoose = require("mongoose")
 const Schema = mongoose.Schema;
 
 const analyticSchema = new Schema({
-    linkId: { type: mongoose.Schema.Types.ObjectId, ref: 'Profile.links', required: true },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true
+    },
+    linkTitle: { type: String, required: true },
+    linkId: { type: mongoose.Schema.Types.ObjectId, ref: "Link", required: true },
     uniqueViews: { type: Number, default: 0 },
     totalClicks: { type: Number, default: 0 },
     deviceType: {
