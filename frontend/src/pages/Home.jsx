@@ -18,7 +18,7 @@ const Home = () => {
                 flexDirection: "column",
                 width: "100%",
                 height: "100%",
-                backgroundColor: "purple"
+                backgroundColor: "#fafafa"
             }} >
                 <div style={{
                     width: "full",
@@ -31,7 +31,7 @@ const Home = () => {
                     justifyContent: "space-between",
                     color: "black",
                     backgroundColor: "white",
-                    border: "5px solid grey",
+                    border: "2px solid grey",
                     borderRadius: "20vw",
                 }}>
                     <div style={{
@@ -57,7 +57,7 @@ const Home = () => {
 
                         <h3 style={{ fontWeight: 500 }}>| Marketplace</h3> </div>
 
-                    <button style={{ padding: "1px 20px", border: "2px solid", borderRadius: "50px", backgroundColor: "#28A263" }}><h3 style={{ fontWeight: 500 }}>Sign up free</h3></button>
+                    <button style={{ padding: "1px 20px", marginRight: "0.7vw", border: "2px", borderRadius: "50px", backgroundColor: "#28A263" }}><h3 style={{ fontWeight: 500 }}>Sign up free</h3></button>
                 </div>
                 <div style={{
                     display: "flex",
@@ -69,7 +69,7 @@ const Home = () => {
                     <div style={{
                         width: "40vw",
                         height: "60vh",
-                        backgroundColor: "yellow",
+
 
 
                     }}>
@@ -84,7 +84,7 @@ const Home = () => {
                     <div style={{
                         width: "40vw",
                         height: "60vh",
-                        backgroundColor: "yellow"
+
                     }}>
                         <img style={{ width: "100%", height: "100%" }} src={analytImage} alt="analytics" />
                     </div>
@@ -99,7 +99,7 @@ const Home = () => {
                     <div style={{
                         width: "40vw",
                         height: "60vh",
-                        backgroundColor: "yellow",
+
                         display: "flex",
                         flexDirection: "column",
                         marginLeft: "12vw"
@@ -113,7 +113,7 @@ const Home = () => {
                     <div style={{
                         width: "35vw",
                         height: "60vh",
-                        backgroundColor: "yellow",
+
                         marginLeft: "15vw"
                     }}>
                         <h2 style={{ color: "black", }}>Analyze your audience <br />
@@ -135,7 +135,7 @@ const Home = () => {
                     <div style={{
                         width: "45vw",
                         height: "50vh",
-                        backgroundColor: "yellow",
+
                         display: "flex",
                         flexDirection: "column",
                         marginLeft: "12vw"
@@ -165,7 +165,7 @@ const Home = () => {
                     </div>
                 </div>
                 <div className='feedback' style={{
-                    backgroundColor: "lavender",
+
                     width: "100vw",
                     height: "100vh",
                     display: "flex",
@@ -251,16 +251,16 @@ const Home = () => {
 
                 </div>
                 <div className='footer' style={{
-                    marginTop: "15vh",
+                    marginTop: "25vh",
                     width: "100vw",
                     height: "100vh",
-                    backgroundColor: "red",
+
                     display: "flex",
                     flexDirection: 'column',
                     justifyContent: "center",
                     alignItems: "center"
                 }}>
-                    <h1 style={{ justifySelf: "flex-start" }}>All Link Apps and Integrations</h1>
+                    <h1 style={{ alignSelf: "flex-start", marginLeft: "4vw" }}>All Link Apps and Integrations</h1>
                     <div style={{
                         width: "80vw",
                         margin: "auto",
@@ -308,6 +308,104 @@ const Home = () => {
                             </div>
                         ))}
                     </div>
+                    <div style={{
+                        width: "100%",
+                        background: "white",
+                        marginTop: "5vh",
+                        padding: "3vw 5vw",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        boxShadow: "0px -2px 10px rgba(0, 0, 0, 0.1)"
+                    }}>
+                        <div className='upperFooter' style={{
+                            display: "flex",
+                            gap: "2vw",
+                            justifyContent: "space-evenly",
+                            alignItems: "center"
+                        }}>
+                            {/* Buttons Section */}
+                            <div style={{ display: "flex", gap: "1vw", marginBottom: "2vw" }}>
+                                <button style={{
+                                    width: "8vw",
+                                    padding: "2vh"
+                                }}>Log in</button>
+                                <button style={{
+                                    width: "8vw",
+                                    background: "#1DA35E",
+                                    color: "white",
+                                    border: "none",
+                                    borderRadius: "15px",
+                                    fontSize: "1vw",
+                                    cursor: "pointer"
+                                }}>Sign up free</button>
+                            </div>
+
+                            {/* Links Section */}
+                            <div style={{
+                                width: "100%",
+                                display: "grid",
+                                gridTemplateColumns: "1fr 1fr 1fr",
+                                textAlign: "left",
+                                gap: "6vw",
+                                paddingBottom: "2vw",
+                                borderBottom: "1px solid #ccc"
+                            }}>
+                                <div>
+                                    <h4>About Spark</h4>
+                                    <p>Blog</p>
+                                    <p>Press</p>
+                                    <p>Social Good</p>
+                                    <p>Contact</p>
+                                </div>
+                                <div>
+                                    <h4>Careers</h4>
+                                    <p>Getting Started</p>
+                                    <p>Features and How-Tos</p>
+                                    <p>FAQs</p>
+                                    <p>Report a Violation</p>
+                                </div>
+                                <div>
+                                    <h4>Terms and Conditions</h4>
+                                    <p>Privacy Policy</p>
+                                    <p>Cookie Notice</p>
+                                    <p>Trust Center</p>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div style={{
+                            display: "flex",
+                            justifyContent: 'space-between',
+                            alignItems: "center",
+                            alignItems: "center"
+                        }}>
+                            {/* Acknowledgement Text */}
+                            <p style={{
+                                fontSize: "0.9vw",
+                                fontWeight: "700",
+                                color: "#333",
+                                textAlign: "center",
+                                marginTop: "2vw",
+                                maxWidth: "70%"
+                            }}>
+                                We acknowledge the Traditional Custodians of the land on which our office stands, The Wurundjeri people of the Kulin Nation, and pay our respects to Elders past, present, and emerging.
+                            </p>
+
+                            {/* Social Media Icons */}
+                            <div style={{ display: "flex", gap: "1.5vw", marginTop: "1.5vw" }}>
+                                <i class="ri-twitter-fill"></i>
+                                <i class="ri-instagram-fill"></i>
+                                <i class="ri-youtube-fill"></i>
+                                <i class="ri-tiktok-fill"></i>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+
 
                 </div>
             </div>
