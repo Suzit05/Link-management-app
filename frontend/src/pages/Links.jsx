@@ -1,73 +1,14 @@
 import React, { useState } from "react";
-import sparklogo from "../assets/images/sparklogo.png"
+import Sidebar from "../Components/Sidebar";
+import Mobile from "../Components/Mobile";
+
 
 const Links = () => {
     const [bgColor, setBgColor] = useState("#000000");
 
     return (
-        <div style={{ display: "flex", height: "100vh", backgroundColor: "#F4F4F4" }}>
-            {/* Sidebar */}
-            <div style={{ width: "18%", backgroundColor: "#fff", padding: "2vw", borderRight: "1px solid #ddd" }}>
-                <div style={{ display: "flex", alignItems: "center", marginBottom: "2vw" }}>
-                    <img src={sparklogo} alt="Spark Logo" style={{ width: "6vw", marginRight: "1vw" }} />
-
-                </div>
-                <ul style={{ listStyle: "none", padding: 0, fontSize: "1.2vw" }}>
-                    <li style={{
-                        padding: "1vw 0",
-                        cursor: "pointer",
-                        color: "#1DA35E",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "0.7vw"
-                    }}>
-                        <i className="ri-links-line" style={{ fontSize: "1.2vw" }}></i>
-                        Links
-                    </li>
-
-                    <li style={{
-                        padding: "1vw 0",
-                        cursor: "pointer",
-                        color: "grey",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "0.7vw"
-                    }}>
-                        <i className="ri-palette-line" style={{ fontSize: "1.2vw" }}></i>
-                        Appearance
-                    </li>
-
-                    <li style={{
-                        padding: "1vw 0",
-                        cursor: "pointer",
-                        color: "grey",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "0.7vw"
-                    }}>
-                        <i className="ri-bar-chart-line" style={{ fontSize: "1.2vw" }}></i>
-                        Analytics
-                    </li>
-
-                    <li style={{
-                        padding: "1vw 0",
-                        cursor: "pointer",
-                        color: "grey",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "0.7vw"
-                    }}>
-                        <i className="ri-settings-3-line" style={{ fontSize: "1.2vw" }}></i>
-                        Settings
-                    </li>
-                </ul>
-
-                <div style={{ position: "absolute", bottom: "2vw", display: "flex", alignItems: "center", border: "2px solid black", borderRadius: "3vw", padding: "1vw" }}>
-                    <img src="/user-avatar.png" alt="User" style={{ width: "2vw", borderRadius: "50%", marginRight: "1vw" }} />
-                    <span style={{ fontSize: "1vw" }}>Jenny Wilson</span>
-                </div>
-            </div>
-
+        <div style={{ display: "flex", height: "100vh", backgroundColor: "#F4F4F4", width: "100vw" }}>
+            <Sidebar></Sidebar>
             {/* Main Content */}
             <div style={{ flex: 1, padding: "2vw" }}>
                 {/* Header */}
@@ -76,19 +17,8 @@ const Links = () => {
 
                 <div style={{ display: "flex", gap: "10vw" }}>
                     {/* Mobile Preview */}
-                    <div style={{ flex: "0.3", backgroundColor: "#fff", padding: "2vw", borderRadius: "1vw", textAlign: "center" }}>
-                        <div style={{ width: "100%", height: "40vw", border: "1vw solid black", borderRadius: "3vw", padding: "2vw" }}>
-                            <img src="/avatar.png" alt="Profile" style={{ width: "6vw", borderRadius: "50%", marginBottom: "1vw" }} />
-                            <h3 style={{ fontSize: "1.5vw" }}>@opopo_08</h3>
-                            <button style={{ padding: "1vw", width: "40%", margin: "1vw", backgroundColor: "#1DA35E", color: "#fff", border: "none", borderRadius: "0.5vw" }}>Link</button>
-                            <button style={{ padding: "1vw", width: "40%", margin: "1vw", backgroundColor: "#ddd", color: "#000", border: "none", borderRadius: "0.5vw" }}>Shop</button>
-                            <div style={{ textAlign: "left", marginTop: "2vw" }}>
-                                <button style={{ padding: "1vw", width: "100%", backgroundColor: "#ddd", border: "none", borderRadius: "0.5vw", marginBottom: "1vw" }}>📺 Latest YouTube Video</button>
-                                <button style={{ padding: "1vw", width: "100%", backgroundColor: "#ddd", border: "none", borderRadius: "0.5vw" }}>📸 Latest Instagram Reel</button>
-                            </div>
-                            <button style={{ marginTop: "2vw", padding: "1vw", width: "100%", backgroundColor: "#1DA35E", color: "#fff", border: "none", borderRadius: "0.5vw" }}>Get Connected</button>
-                        </div>
-                    </div>
+                    <Mobile></Mobile>
+
 
                     {/* Profile Customization */}
                     <div style={{ flex: "0.7", display: "flex", flexDirection: "column", gap: "2vw" }}>
@@ -138,7 +68,7 @@ const Links = () => {
                 {/* Save Button */}
                 <button style={{ marginTop: "2vw", padding: "1vw", width: "100%", backgroundColor: "#1DA35E", color: "#fff", border: "none", borderRadius: "0.5vw" }}>Save</button>
             </div>
-        </div>
+        </div >
     );
 };
 
