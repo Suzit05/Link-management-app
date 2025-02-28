@@ -2,6 +2,27 @@ const express = require("express")
 const profileModel = require("../models/profile.model")
 const authMiddleware = require("../middleware/auth")
 const router = express.Router()
+const User = require("../models/user.model");
+const jwt = require("jsonwebtoken")
+
+//get user detail
+router.get('/me', async (req, res, next) => {
+    try {
+        const token = req.headers.authorization.split(' ')[1];
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        const user = await User.findById(decoded.id).select('-password'); // Exclude password
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.status(200).json(user);
+    } catch (err) {
+        next(err);
+    }
+});
+
+
+
+
 
 // GET /api/profile/:userId - Fetch user profile
 router.get("/:userId", authMiddleware, async (req, res, next) => {

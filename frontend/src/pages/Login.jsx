@@ -1,8 +1,69 @@
-import React from 'react'
-import sparklogo from "../assets/images/sparklogo.png"
-import woman from "../assets/images/woman.png"
+import React, { useState } from 'react';
+import sparklogo from "../assets/images/sparklogo.png";
+import woman from "../assets/images/woman.png";
 
 const Login = () => {
+  // State for form inputs
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  // State for feedback messages
+  const [message, setMessage] = useState("");
+  const [isError, setIsError] = useState(false);
+
+  // Handle input changes
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      // Send POST request to the backend
+      const response = await fetch('http://localhost:3000/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Save the JWT token in localStorage
+        localStorage.setItem('token', data.token);
+        setMessage("Login successful! Redirecting...");
+        setIsError(false);
+
+        // Redirect to dashboard or home page after a delay
+        setTimeout(() => {
+          window.location.href = "/aboutuser"; // Update with your dashboard route
+        }, 2000);
+      } else {
+        setMessage(data.message || "Login failed");
+        setIsError(true);
+      }
+    } catch (error) {
+      setMessage("An error occurred. Please try again.");
+      setIsError(true);
+      console.error("Error:", error);
+    }
+  };
+
+  // Check if the form is valid (both fields filled)
+  const isFormValid = () => {
+    return formData.email.trim() && formData.password.trim();
+  };
+
   return (
     <div style={{
       display: "flex",
@@ -26,24 +87,53 @@ const Login = () => {
         </div>
 
         {/* Heading */}
-        <h1 style={{ fontSize: "2.5vw", fontWeight: "bold", marginBottom: "1vw", letterSpacing: "-3px" }}>Sign up to your Spark</h1>
+        <h1 style={{ fontSize: "2.5vw", fontWeight: "bold", marginBottom: "1vw", letterSpacing: "-3px" }}>Sign in to your Spark</h1>
+
+        {/* Feedback Message */}
+        {message && (
+          <p style={{ color: isError ? "red" : "green", fontSize: "1vw", marginBottom: "1vw" }}>
+            {message}
+          </p>
+        )}
 
         {/* Form */}
-        <form style={{ width: "100%", display: "flex", flexDirection: "column", gap: "1vw" }}>
-          <input type="text" placeholder="Spark/Username" style={inputStyle} />
-
-          <input type="password" placeholder="Password" style={inputStyle} />
-
-
-
+        <form onSubmit={handleSubmit} style={{ width: "100%", display: "flex", flexDirection: "column", gap: "1vw" }}>
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleInputChange}
+            style={inputStyle}
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleInputChange}
+            style={inputStyle}
+            required
+          />
 
           {/* Submit Button */}
-          <button style={buttonStyle} disabled>Login</button>
+          <button
+            type="submit"
+            style={{
+              ...buttonStyle,
+              backgroundColor: isFormValid() ? "#28A263" : "#BDBDBD",
+              cursor: isFormValid() ? "pointer" : "not-allowed",
+            }}
+            disabled={!isFormValid()}
+          >
+            Login
+          </button>
         </form>
 
         {/* Footer */}
         <p style={{ fontSize: "0.8vw", marginTop: "2vw", color: "#777" }}>
-          Dont have an account , <span style={{ color: "#28A263", borderBottom: "2px solid  #28A263" }}>Sign up</span>
+          Don't have an account? <span style={{ color: "#28A263", borderBottom: "2px solid #28A263", cursor: "pointer" }}>Sign up</span>
         </p>
       </div>
 
@@ -51,10 +141,10 @@ const Login = () => {
       <div style={{
         width: "40%",
         height: "100%"
-      }}> {/* Image */}
+      }}>
         <img style={{ width: "100%", height: "100%" }} src={woman} alt="" />
       </div>
-    </div >
+    </div>
   );
 };
 
@@ -75,13 +165,9 @@ const buttonStyle = {
   marginTop: "3vw",
   marginLeft: "1vw",
   fontSize: "1.2vw",
-  backgroundColor: "#BDBDBD",
   color: "white",
   border: "none",
   borderRadius: "15px",
-
 };
 
-
-
-export default Login
+export default Login;

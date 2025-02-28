@@ -1,7 +1,10 @@
 const express = require('express')
 const app = express()
+const cors = require('cors'); // Import the cors package
 const dotenv = require("dotenv")
 dotenv.config();
+// Enable CORS for all routes
+app.use(cors());
 
 app.use(express.json()); // ✅ Enables JSON body parsing
 app.use(express.urlencoded({ extended: true })); // ✅ Enables form data parsing
@@ -18,7 +21,7 @@ const appearanceRoutes = require("./routes/appearance")
 const port = process.env.port || 3000;
 
 app.use(errorHandler)
-app.use("/api/", authRoutes)  //register and login - auth
+app.use("/api/auth", authRoutes)  //register and login - auth
 app.use("/api/user", userRoutes)
 app.use("/api/profile", profileRoutes)
 app.use("/api/link", linkRoutes)

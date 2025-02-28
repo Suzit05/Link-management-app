@@ -30,8 +30,8 @@ router.post("/register", async (req, res, next) => { //for sign up
 
 router.post("/login", async (req, res, next) => {
     try {
-        const { username, password } = req.body
-        const user = await userModel.findOne({ username })
+        const { email, password } = req.body
+        const user = await userModel.findOne({ email })
         if (!user) {
             return res.status(401).json({ message: "Invalid credentials" })
         }
@@ -42,7 +42,7 @@ router.post("/login", async (req, res, next) => {
 
         const payload = {
             id: user._id,
-            username: user.username,
+            email: user.email,
         }
         const token = jwt.sign(payload, process.env.SECRET_KEY) //token ko sign kr rha
         res.json({ token, message: "Login successful" }).status(200) //token ko frontend pr bheja gya
