@@ -239,75 +239,75 @@ const Appearance = () => {
                                     </div>
 
                                     {/* Air Grey */}
-                                    <div style={{ backgroundColor: "#ffffff", borderRadius: "10px", height: '12vw', padding: "1vw", boxShadow: "0 0 5px rgba(0,0,0,0.1)", border: "1px solid #ddd" }}>
-                                        <div style={{ width: "100%", backgroundColor: "#ffffff", borderRadius: "10px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "0.7vw" }}>
-                                            <div style={{ width: "100%", height: "1vw", backgroundColor: "#ccc", borderRadius: "5px" }}></div>
-                                            <div style={{ width: "100%", height: "1vw", backgroundColor: "#ccc", borderRadius: "5px" }}></div>
-                                            <div style={{ width: "100%", height: "1vw", backgroundColor: "#ccc", borderRadius: "5px" }}></div>
-                                            <h2 style={{ marginTop: "2vw", fontSize: "1.1vw", color: "#333" }}>Air Snow</h2>
+                                    <div style={{ backgroundColor: "#EBEEF1", borderRadius: "10px", height: '12vw', padding: "1vw", boxShadow: "0 0 5px rgba(0,0,0,0.1)", border: "1px solid #ddd" }}>
+                                        <div style={{ width: "100%", backgroundColor: "#EBEEF1", borderRadius: "10px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "0.7vw" }}>
+                                            <div style={{ width: "100%", height: "1vw", backgroundColor: "#fff", borderRadius: "5px" }}></div>
+                                            <div style={{ width: "100%", height: "1vw", backgroundColor: "#fff", borderRadius: "5px" }}></div>
+                                            <div style={{ width: "100%", height: "1vw", backgroundColor: "#fff", borderRadius: "5px" }}></div>
+                                            <h2 style={{ marginTop: "2vw", fontSize: "1.1vw", color: "#333" }}>Air Grey</h2>
                                         </div>
 
                                     </div>
 
                                     {/* Air Smoke */}
-                                    <div style={{ backgroundColor: "#ffffff", borderRadius: "10px", height: '12vw', padding: "1vw", boxShadow: "0 0 5px rgba(0,0,0,0.1)", border: "1px solid #ddd" }}>
-                                        <div style={{ width: "100%", backgroundColor: "#ffffff", borderRadius: "10px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "0.7vw" }}>
+                                    <div style={{ backgroundColor: "#2A3235", borderRadius: "10px", height: '12vw', padding: "1vw", boxShadow: "0 0 5px rgba(0,0,0,0.1)", border: "1px solid #ddd" }}>
+                                        <div style={{ width: "100%", backgroundColor: "#2A3235", borderRadius: "10px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "0.7vw" }}>
                                             <div style={{ width: "100%", height: "1vw", backgroundColor: "#ccc", borderRadius: "5px" }}></div>
                                             <div style={{ width: "100%", height: "1vw", backgroundColor: "#ccc", borderRadius: "5px" }}></div>
                                             <div style={{ width: "100%", height: "1vw", backgroundColor: "#ccc", borderRadius: "5px" }}></div>
-                                            <h2 style={{ marginTop: "2vw", fontSize: "1.1vw", color: "#333" }}>Air Snow</h2>
+                                            <h2 style={{ marginTop: "2vw", fontSize: "1.1vw", color: "white" }}>Air Smoke</h2>
                                         </div>
 
                                     </div>
 
                                     {/* Air Black */}
-                                    <div style={{ backgroundColor: "#ffffff", borderRadius: "10px", height: '12vw', padding: "1vw", boxShadow: "0 0 5px rgba(0,0,0,0.1)", border: "1px solid #ddd" }}>
-                                        <div style={{ width: "100%", backgroundColor: "#ffffff", borderRadius: "10px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "0.7vw" }}>
-                                            <div style={{ width: "100%", height: "1vw", backgroundColor: "#ccc", borderRadius: "5px" }}></div>
-                                            <div style={{ width: "100%", height: "1vw", backgroundColor: "#ccc", borderRadius: "5px" }}></div>
-                                            <div style={{ width: "100%", height: "1vw", backgroundColor: "#ccc", borderRadius: "5px" }}></div>
-                                            <h2 style={{ marginTop: "2vw", fontSize: "1.1vw", color: "#333" }}>Air Snow</h2>
+                                    <div style={{ backgroundColor: "black", borderRadius: "10px", height: '12vw', padding: "1vw", boxShadow: "0 0 5px rgba(0,0,0,0.1)", border: "1px solid #ddd" }}>
+                                        <div style={{ width: "100%", backgroundColor: "black", borderRadius: "10px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "0.7vw" }}>
+                                            <div style={{ width: "100%", height: "1vw", backgroundColor: "#1c1c1c", borderRadius: "5px" }}></div>
+                                            <div style={{ width: "100%", height: "1vw", backgroundColor: "#1c1c1c", borderRadius: "5px" }}></div>
+                                            <div style={{ width: "100%", height: "1vw", backgroundColor: "#1c1c1c", borderRadius: "5px" }}></div>
+                                            <h2 style={{ marginTop: "2vw", fontSize: "1.1vw", color: "white" }}>Air Black</h2>
                                         </div>
 
                                     </div>
                                     {/* Mineral Blue */}
-                                    <div style={{ backgroundColor: "#ffffff", borderRadius: "10px", height: '12vw', padding: "1vw", boxShadow: "0 0 5px rgba(0,0,0,0.1)", border: "1px solid #ddd" }}>
-                                        <div style={{ width: "100%", backgroundColor: "#ffffff", borderRadius: "10px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "0.7vw" }}>
+                                    <div style={{ backgroundColor: "#E0F6FF", borderRadius: "10px", height: '12vw', padding: "1vw", boxShadow: "0 0 5px rgba(0,0,0,0.1)", border: "1px solid #ddd" }}>
+                                        <div style={{ width: "100%", backgroundColor: "#E0F6FF", borderRadius: "10px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "0.7vw" }}>
                                             <div style={{ width: "100%", height: "1vw", backgroundColor: "#ccc", borderRadius: "5px" }}></div>
                                             <div style={{ width: "100%", height: "1vw", backgroundColor: "#ccc", borderRadius: "5px" }}></div>
                                             <div style={{ width: "100%", height: "1vw", backgroundColor: "#ccc", borderRadius: "5px" }}></div>
-                                            <h2 style={{ marginTop: "2vw", fontSize: "1.1vw", color: "#333" }}>Air Snow</h2>
+                                            <h2 style={{ marginTop: "2vw", fontSize: "1.1vw", color: "#333" }}>Mineral Blue</h2>
                                         </div>
 
                                     </div>
 
                                     {/* Mineral Green */}
-                                    <div style={{ backgroundColor: "#ffffff", borderRadius: "10px", height: '12vw', padding: "1vw", boxShadow: "0 0 5px rgba(0,0,0,0.1)", border: "1px solid #ddd" }}>
-                                        <div style={{ width: "100%", backgroundColor: "#ffffff", borderRadius: "10px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "0.7vw" }}>
+                                    <div style={{ backgroundColor: "#E0FAEE", borderRadius: "10px", height: '12vw', padding: "1vw", boxShadow: "0 0 5px rgba(0,0,0,0.1)", border: "1px solid #ddd" }}>
+                                        <div style={{ width: "100%", backgroundColor: "#E0FAEE", borderRadius: "10px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "0.7vw" }}>
                                             <div style={{ width: "100%", height: "1vw", backgroundColor: "#ccc", borderRadius: "5px" }}></div>
                                             <div style={{ width: "100%", height: "1vw", backgroundColor: "#ccc", borderRadius: "5px" }}></div>
                                             <div style={{ width: "100%", height: "1vw", backgroundColor: "#ccc", borderRadius: "5px" }}></div>
-                                            <h2 style={{ marginTop: "2vw", fontSize: "1.1vw", color: "#333" }}>Air Snow</h2>
+                                            <h2 style={{ marginTop: "2vw", fontSize: "1.1vw", color: "#333" }}>Mineral Green</h2>
                                         </div>
 
                                     </div>
 
                                     {/* Mineral Orange */}
-                                    <div style={{ backgroundColor: "#ffffff", borderRadius: "10px", height: '12vw', padding: "1vw", boxShadow: "0 0 5px rgba(0,0,0,0.1)", border: "1px solid #ddd" }}>
-                                        <div style={{ width: "100%", backgroundColor: "#ffffff", borderRadius: "10px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "0.7vw" }}>
+                                    <div style={{ backgroundColor: "#FFEAE2", borderRadius: "10px", height: '12vw', padding: "1vw", boxShadow: "0 0 5px rgba(0,0,0,0.1)", border: "1px solid #ddd" }}>
+                                        <div style={{ width: "100%", backgroundColor: "#FFEAE2", borderRadius: "10px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "0.7vw" }}>
                                             <div style={{ width: "100%", height: "1vw", backgroundColor: "#ccc", borderRadius: "5px" }}></div>
                                             <div style={{ width: "100%", height: "1vw", backgroundColor: "#ccc", borderRadius: "5px" }}></div>
                                             <div style={{ width: "100%", height: "1vw", backgroundColor: "#ccc", borderRadius: "5px" }}></div>
-                                            <h2 style={{ marginTop: "2vw", fontSize: "1.1vw", color: "#333" }}>Air Snow</h2>
+                                            <h2 style={{ marginTop: "2vw", fontSize: "1.1vw", color: "#333" }}>Mineral Orange</h2>
                                         </div>
 
                                     </div>
-                                    <div style={{ backgroundColor: "#ffffff", borderRadius: "10px", height: '12vw', padding: "1vw", boxShadow: "0 0 5px rgba(0,0,0,0.1)", border: "1px solid #ddd" }}>
-                                        <div style={{ width: "100%", backgroundColor: "#ffffff", borderRadius: "10px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "0.7vw" }}>
+                                    <div style={{ backgroundColor: "#FFF8E0", borderRadius: "10px", height: '12vw', padding: "1vw", boxShadow: "0 0 5px rgba(0,0,0,0.1)", border: "1px solid #ddd" }}>
+                                        <div style={{ width: "100%", backgroundColor: "#FFF8E0", borderRadius: "10px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "0.7vw" }}>
                                             <div style={{ width: "100%", height: "1vw", backgroundColor: "#ccc", borderRadius: "5px" }}></div>
                                             <div style={{ width: "100%", height: "1vw", backgroundColor: "#ccc", borderRadius: "5px" }}></div>
                                             <div style={{ width: "100%", height: "1vw", backgroundColor: "#ccc", borderRadius: "5px" }}></div>
-                                            <h2 style={{ marginTop: "2vw", fontSize: "1.1vw", color: "#333" }}>Air Snow</h2>
+                                            <h2 style={{ marginTop: "2vw", fontSize: "1.1vw", color: "#333" }}>Mineral Yellow</h2>
                                         </div>
 
                                     </div>
