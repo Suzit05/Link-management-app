@@ -1,24 +1,53 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Sidebar from "../Components/Sidebar";
 import Mobile from "../Components/Mobile";
 import Modal from "../Components/Modal";
 import { UserContext } from "../Context/UserContext";
+import { useProfile } from "../Context/ProfileContext";
 
 const Links = () => {
-    const [bgColor, setBgColor] = useState("#000000");
-    const [customColor, setCustomColor] = useState(""); // State for custom color input
-    const [profileImage, setProfileImage] = useState(null); // State for profile image
+    const { profile, setProfile } = useProfile(); // Use profile context
     const { user } = useContext(UserContext); // Get user data from context
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [activeTab, setActiveTab] = useState("link"); // "link" or "shop"
-    const [items, setItems] = useState([]);
+    const [customColor, setCustomColor] = useState(""); // State for custom color input
+
+    // Fetch profile data on component mount
+    useEffect(() => {
+        const fetchProfileData = async () => {
+            try {
+                const response = await fetch('http://localhost:3000/api/profile/me', {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    },
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    // Ensure links and Shop are always defined
+                    const updatedProfile = {
+                        ...data,
+                        links: data.links || [],
+                        Shop: data.Shop || [],
+                    };
+                    setProfile(updatedProfile); // Update profile context with fetched data
+                } else {
+                    throw new Error(data.message || "Failed to fetch profile data");
+                }
+            } catch (error) {
+                console.error("Error fetching profile data:", error);
+            }
+        };
+
+        fetchProfileData();
+    }, [setProfile]);
 
     // Handle saving link/shop
-    const handleSave = (newItem) => {
-        setItems([...items, newItem]); // Append new item to the list
+    const handleSaveItem = (newItem) => {
+        const updatedLinks = [...profile.links, newItem]; // Append new item to the list
+        setProfile({ ...profile, links: updatedLinks }); // Update profile context
         setIsModalOpen(false); // Close modal after saving
     };
-
 
     // Handle profile image upload
     const handleImageUpload = (e) => {
@@ -26,7 +55,7 @@ const Links = () => {
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
-                setProfileImage(reader.result);
+                setProfile({ ...profile, profileImage: reader.result }); // Update profile context
             };
             reader.readAsDataURL(file);
         }
@@ -34,7 +63,7 @@ const Links = () => {
 
     // Handle profile image removal
     const handleRemoveImage = () => {
-        setProfileImage(null);
+        setProfile({ ...profile, profileImage: "" }); // Update profile context
     };
 
     // Handle custom color input change
@@ -44,10 +73,36 @@ const Links = () => {
 
         // Update banner background color if the input is a valid hex color
         if (/^#([0-9A-Fa-f]{3}){1,2}$/.test(value)) {
-            setBgColor(value);
+            setProfile({ ...profile, bannerColor: value }); // Update profile context
         }
+    };
 
+    // Handle save button click
+    const handleSaveProfile = async () => {
+        try {
+            const response = await fetch('http://localhost:3000/api/profile', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+                body: JSON.stringify(profile),
+            });
 
+            const data = await response.json();
+            if (response.ok) {
+                alert("Profile saved successfully!");
+                // Redirect to appearance page
+                setTimeout(() => {
+                    window.location.href = "/appearance"; // Update with your dashboard route
+                }, 2000);
+            } else {
+                alert(data.message || "Failed to save profile");
+            }
+        } catch (error) {
+            console.error("Error saving profile:", error);
+            alert("An error occurred. Please try again.");
+        }
     };
 
     return (
@@ -56,12 +111,12 @@ const Links = () => {
             {/* Main Content */}
             <div style={{ flex: 1, padding: "2vw" }}>
                 {/* Header */}
-                <h2 style={{ fontSize: "1.8vw", marginBottom: "0.5vw" }}>Hi,{user?.firstName} {user?.lastName}</h2>
+                <h2 style={{ fontSize: "1.8vw", marginBottom: "0.5vw" }}>Hi, {user?.firstName} {user?.lastName}</h2>
                 <p style={{ color: "gray", marginBottom: "2vw" }}>Congratulations. You got a great response today.</p>
 
                 <div style={{ display: "flex", gap: "10vw" }}>
                     {/* Mobile Preview */}
-                    <Mobile></Mobile>
+                    <Mobile />
 
                     {/* Profile Customization */}
                     <div style={{ flex: "0.7", display: "flex", flexDirection: "column", gap: "2vw" }}>
@@ -78,7 +133,7 @@ const Links = () => {
                                         backgroundColor: "white",
                                         height: "12vh",
                                         width: "5vw",
-                                        backgroundImage: profileImage ? `url(${profileImage})` : "none",
+                                        backgroundImage: profile.profileImage ? `url(${profile.profileImage})` : "none",
                                         backgroundSize: "cover",
                                         backgroundPosition: "center",
                                     }}
@@ -112,10 +167,14 @@ const Links = () => {
                             <input
                                 type="text"
                                 placeholder="username"
+                                value={profile.profileTitle || ""}
+                                onChange={(e) => setProfile({ ...profile, profileTitle: e.target.value })}
                                 style={{ width: "100%", padding: "1vw", marginBottom: "1vw", border: "1px solid #ddd", borderRadius: "0.5vw" }}
                             />
                             <p>Bio</p>
                             <textarea
+                                value={profile.bio || ""}
+                                onChange={(e) => setProfile({ ...profile, bio: e.target.value })}
                                 style={{ width: "100%", padding: "1vw", border: "1px solid #ddd", borderRadius: "0.5vw" }}
                                 placeholder="Bio"
                             ></textarea>
@@ -153,10 +212,6 @@ const Links = () => {
                                 </button>
                             </div>
 
-
-
-
-
                             {/* Add Button */}
                             <button
                                 style={{
@@ -173,32 +228,30 @@ const Links = () => {
                             >
                                 + Add
                             </button>
-                        </div>
-
-                        {/* Display added links/shops */}
-                        <div style={{ marginTop: "2vw" }}>
-                            {items.map((item, index) => (
-                                <div key={index} style={{ backgroundColor: "#f5f5f5", padding: "1vw", borderRadius: "1vw", marginBottom: "1vw", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                                    <div>
-                                        <strong>{item.title}</strong>
-                                        <p>{item.url}</p>
+                            {/* Display added links/shops */}
+                            <div style={{ marginTop: "2vw", width: "100%" }}>
+                                {profile.links.map((link, index) => (
+                                    <div key={index} style={{ backgroundColor: "#ddd", padding: "1vw", borderRadius: "1vw", marginBottom: "1vw", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                                        <div>
+                                            <strong>{link.title}</strong>
+                                            <p>{link.url}</p>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" checked style={{ marginRight: "1vw" }} />
+                                            <i className="ri-delete-bin-line" style={{ cursor: "pointer", color: "red" }} onClick={() => setProfile({ ...profile, links: profile.links.filter((_, i) => i !== index) })}></i>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <input type="checkbox" checked style={{ marginRight: "1vw" }} />
-                                        <i className="ri-delete-bin-line" style={{ cursor: "pointer", color: "red" }} onClick={() => setItems(items.filter((_, i) => i !== index))}></i>
-                                    </div>
-                                </div>
-                            ))}
+                                ))}
+                            </div>
                         </div>
 
                         {/* Modal */}
-                        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} activeTab={activeTab} setActiveTab={setActiveTab} onSave={handleSave} />
+                        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} activeTab={activeTab} setActiveTab={setActiveTab} onSave={handleSaveItem} />
 
-                        {/**modal aur links shop pr kaam ho rha .........ramesh@gmail.com and 11112222 */}
                         {/* Banner Customization */}
                         <div style={{ backgroundColor: "white", padding: "2vw", borderRadius: "1vw" }}>
                             <h3 style={{ fontSize: "1.5vw", marginBottom: "1vw" }}>Banner</h3>
-                            <div style={{ backgroundColor: bgColor, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "20vh", padding: "2vw", borderRadius: "1vw", textAlign: "center", color: "#fff" }}>
+                            <div style={{ backgroundColor: profile.bannerColor || "#000000", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "20vh", padding: "2vw", borderRadius: "1vw", textAlign: "center", color: "#fff" }}>
                                 <div
                                     className="dp"
                                     style={{
@@ -206,12 +259,12 @@ const Links = () => {
                                         backgroundColor: "white",
                                         height: "12vh",
                                         width: "5vw",
-                                        backgroundImage: profileImage ? `url(${profileImage})` : "none",
+                                        backgroundImage: profile.profileImage ? `url(${profile.profileImage})` : "none",
                                         backgroundSize: "cover",
                                         backgroundPosition: "center",
                                     }}
                                 ></div>
-                                <h3 className="username">@opopo_08</h3>
+                                <h3 className="username">{profile.profileTitle || "profile title"}</h3>
                             </div>
                             <p style={{ marginTop: "1vw" }}>Custom Background Color</p>
                             <div style={{ display: "flex", gap: "1vw", marginTop: "0.5vw" }}>
@@ -224,9 +277,9 @@ const Links = () => {
                                             backgroundColor: color,
                                             borderRadius: "50%",
                                             cursor: "pointer",
-                                            border: bgColor === color ? "3px solid #1DA35E" : "1px solid #ddd"
+                                            border: profile.bannerColor === color ? "3px solid #1DA35E" : "1px solid #ddd"
                                         }}
-                                        onClick={() => setBgColor(color)}
+                                        onClick={() => setProfile({ ...profile, bannerColor: color })}
                                     ></div>
                                 ))}
                             </div>
@@ -252,7 +305,12 @@ const Links = () => {
 
                 <div style={{ display: "flex", padding: "1vw", alignItems: "center", justifyContent: "flex-end" }}>
                     {/* Save Button */}
-                    <button style={{ marginTop: "2vw", padding: "0.4vw 2.2vw", width: "6vw", backgroundColor: "#1DA35E", color: "#fff", border: "none", borderRadius: "0.5vw" }}>Save</button>
+                    <button
+                        onClick={handleSaveProfile}
+                        style={{ marginTop: "2vw", padding: "0.4vw 2.2vw", width: "6vw", backgroundColor: "#1DA35E", color: "#fff", border: "none", borderRadius: "0.5vw", cursor: "pointer" }}
+                    >
+                        Save
+                    </button>
                 </div>
             </div>
         </div>

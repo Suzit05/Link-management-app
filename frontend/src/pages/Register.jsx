@@ -4,7 +4,7 @@ import woman from "../assets/images/woman.png";
 
 const Register = () => {
 
-   
+
 
 
     // State for form inputs
@@ -117,7 +117,7 @@ const Register = () => {
                 {/* Subheading */}
                 <p style={{ fontSize: "1.5vw", marginBottom: "2vw" }}>
                     Create an account
-                    <span style={{ marginLeft: "15vw", fontSize: "2vh", color: "#28A263", cursor: "pointer", borderBottom: "2px solid #28A263" }}>
+                    <span onClick={() => { window.location.href = "/login" }} style={{ marginLeft: "15vw", fontSize: "2vh", color: "#28A263", cursor: "pointer", borderBottom: "2px solid #28A263" }}>
                         Sign in instead
                     </span>
                 </p>
