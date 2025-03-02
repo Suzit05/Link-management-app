@@ -3,8 +3,15 @@ import React, { createContext, useState, useContext, useEffect } from "react";
 // Create the AppearanceContext
 const AppearanceContext = createContext();
 
+
+//...themes pr kaam kro.......mobile m add kro
+////////////themes////////
+
 // Create a provider component
 export const AppearanceProvider = ({ children }) => {
+    const [buttonColor, setButtonColor] = useState("#ddd");
+    const [buttonFontColor, setButtonFontColor] = useState("#000");
+
     const [appearance, setAppearance] = useState({
         layout: { type: "stack", className: "stack" },
         buttonStyles: {
@@ -15,15 +22,26 @@ export const AppearanceProvider = ({ children }) => {
         fontStyles: {
             font: "DM Sans",
             color: "#000000",
-
         },
         themes: {
-            name: "light",
-            backgroundColor: "#FFFFFF",
-            className: "light",
-            insideColor: "#ffff"
-        },
+            selectedStyle: "light",
+            styles: {
+                "air-snow": { className: "air-snow", backgroundColor: "#ffffff" },
+                "air-grey": { className: "air-grey", backgroundColor: "#EBEEF1" },
+                "air-smoke": { className: "air-smoke", backgroundColor: "#2A3235" },
+                "air-black": { className: "air-black", backgroundColor: "black" },
+                "mineral-blue": { className: "mineral-blue", backgroundColor: "#E0F6FF" },
+                "mineral-green": { className: "mineral-green", backgroundColor: "#E0FAEE" },
+                "mineral-orange": { className: "mineral-orange", backgroundColor: "#FFEAE2" },
+                "mineral-yellow": { className: "mineral-yellow", backgroundColor: "#FFF8E0" }
+            },
+            selectedThemeData: {
+                className: "light",
+                backgroundColor: "#FFFFFF"
+            }
+        }
     });
+
 
     // Fetch appearance data from the backend
     const fetchAppearanceData = async () => {
@@ -36,7 +54,18 @@ export const AppearanceProvider = ({ children }) => {
             });
             const data = await response.json();
             if (response.ok) {
-                setAppearance(data); // Set appearance data in state
+                console.log("Fetched appearance from DB:", data);
+
+                // Ensure themes and styles are structured correctly
+                setAppearance(prev => ({
+                    ...prev,
+                    ...data,
+                    themes: {
+                        ...prev.themes,
+                        ...data.themes,
+                        styles: data.themes?.styles || prev.themes.styles // Ensure styles exist
+                    }
+                }));
             } else {
                 throw new Error(data.message || "Failed to fetch appearance data");
             }
@@ -44,6 +73,15 @@ export const AppearanceProvider = ({ children }) => {
             console.error("Error fetching appearance data:", error);
         }
     };
+
+
+    // Sync button colors with appearance state
+    useEffect(() => {
+        if (appearance.buttonStyles) {
+            setButtonColor(appearance.buttonStyles.buttonColor);
+            setButtonFontColor(appearance.buttonStyles.fontColor);
+        }
+    }, [appearance]);
 
     // Save appearance data to the backend
     const saveAppearanceData = async (updatedAppearance) => {
@@ -59,7 +97,10 @@ export const AppearanceProvider = ({ children }) => {
 
             const data = await response.json();
             if (response.ok) {
-                setAppearance(updatedAppearance); // Update local state
+                setAppearance(updatedAppearance);
+                setButtonColor(updatedAppearance.buttonStyles.buttonColor);
+                setButtonFontColor(updatedAppearance.buttonStyles.fontColor);
+                fetchAppearanceData();
                 return data;
             } else {
                 throw new Error(data.message || "Failed to save appearance data");
@@ -76,7 +117,7 @@ export const AppearanceProvider = ({ children }) => {
     }, []);
 
     return (
-        <AppearanceContext.Provider value={{ appearance, setAppearance, saveAppearanceData }}>
+        <AppearanceContext.Provider value={{ appearance, setAppearance, saveAppearanceData, buttonColor, setButtonColor, buttonFontColor, setButtonFontColor }}>
             {children}
         </AppearanceContext.Provider>
     );

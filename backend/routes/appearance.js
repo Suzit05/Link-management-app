@@ -4,34 +4,29 @@ const authMiddleware = require("../middleware/auth");
 const router = express.Router();
 
 // Get appearance settings
-router.get("/", authMiddleware, async (req, res, next) => {
+router.put('/', authMiddleware, async (req, res) => {
     try {
-        const appearance = await appearanceModel.findOne({ userId: req.user.id });
-        res.status(200).json(appearance || {});
-    } catch (err) {
-        next(err);
-    }
-});
+        const userId = req.user.id;
+        const updatedAppearance = req.body;
 
-// Update appearance settings
-router.post("/", authMiddleware, async (req, res, next) => {
-    try {
-        const { theme, buttonStyle, layout } = req.body;
-        let appearance = await appearanceModel.findOne({ userId: req.user.id });
+        // Find and update the appearance data
+        let appearance = await appearanceModel.findOne({ userId });
 
-        if (appearance) {
-            appearance.theme = theme;
-            appearance.buttonStyle = buttonStyle;
-            appearance.layout = layout;
+        if (!appearance) {
+            appearance = new appearanceModel({ userId, ...updatedAppearance });
         } else {
-            appearance = new appearanceModel({ userId: req.user.id, theme, buttonStyle, layout });
+            appearance.set(updatedAppearance);
         }
 
         await appearance.save();
         res.status(200).json(appearance);
-    } catch (err) {
-        next(err);
+    } catch (error) {
+        console.error("Error saving appearance data:", error);
+        res.status(500).json({ message: "Server error" });
     }
 });
+
+
+
 
 module.exports = router;

@@ -3,33 +3,15 @@ import Sidebar from "../Components/Sidebar";
 import Mobile from "../Components/Mobile";
 import { useProfile } from "../Context/ProfileContext";
 import { UserContext } from "../Context/UserContext";
+import { useAppearance } from "../Context/AppearanceContext";
 
 const Appearance = () => {
     const { profile, setProfile } = useProfile(); // Use profile context
     const { user } = useContext(UserContext); // Get user data from context
-    const [buttonColor, setButtonColor] = useState("#ddd");
-    const [buttonFontColor, setButtonFontColor] = useState("#000");
-    const [FontColor, setFontColor] = useState("#000");
-    const [appearance, setAppearance] = useState({
-        layout: { type: "stack", className: "stack" },
-        buttonStyles: {
+    const { buttonColor, setButtonColor, buttonFontColor, setButtonFontColor, FontColor, setFontColor } = useAppearance()
 
-            color: "#000000",
-            fontColor: "#FFFFFF",
-            className: "rounded",
-        },
-        fontStyles: {
-            font: "DM Sans",
-            color: "#000000",
-            className: "dm-sans",
-        },
-        themes: {
-            name: "light",
-            backgroundColor: "#FFFFFF",
-            className: "light",
-        },
-    });
 
+    const { appearance, setAppearance } = useAppearance(); // Use AppearanceContext
     // Fetch profile data on component mount
     useEffect(() => {
         const fetchProfileData = async () => {
@@ -73,6 +55,7 @@ const Appearance = () => {
                 const data = await response.json();
                 if (response.ok) {
                     setAppearance(data); // Set appearance data in state
+
                 } else {
                     throw new Error(data.message || "Failed to fetch appearance data");
                 }
@@ -99,6 +82,9 @@ const Appearance = () => {
             const data = await response.json();
             if (response.ok) {
                 alert("Appearance saved successfully!");
+                // setTimeout(() => {
+                //     window.location.href = "/analytics"; // Update with your dashboard route
+                // }, 2000);
             } else {
                 alert(data.message || "Failed to save appearance");
             }
@@ -109,16 +95,82 @@ const Appearance = () => {
     };
 
 
-    // Handle button style selection
-    const handleButtonStyleSelect = (className) => {
-        setAppearance((prevAppearance) => ({
-            ...prevAppearance,
-            buttonStyles: {
-                ...prevAppearance.buttonStyles,
-                selectedStyle: className, // Update the selected button style
-            },
-        }));
+    const saveAppearanceData = async (updatedAppearance) => {
+        try {
+            const response = await fetch('http://localhost:3000/api/appearance', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+                body: JSON.stringify(updatedAppearance),
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                alert("Appearance saved successfully!");
+            } else {
+                throw new Error(data.message || "Failed to save appearance data");
+            }
+        } catch (error) {
+            console.error("Error saving appearance data:", error);
+            alert("An error occurred. Please try again.");
+        }
     };
+
+
+    const handleButtonStyleSelect = async (selectedClassName) => {
+        // Update local state
+        const updatedAppearance = {
+            ...appearance,
+            buttonStyles: {
+                ...appearance.buttonStyles,
+                className: selectedClassName, // Update selected className
+            },
+        };
+
+        setAppearance(updatedAppearance); // Update local state
+
+        // Save updated appearance data
+        try {
+            await saveAppearanceData(updatedAppearance, false);
+            console.log("Button style selection saved successfully!");
+        } catch (error) {
+            console.error("Error saving button style selection:", error);
+        }
+    };
+
+
+
+    const handleThemeStyleSelect = async (themeStyle) => {
+        // Get the selected theme's className and backgroundColor
+        const selectedTheme = appearance.themes.styles[themeStyle];
+        const { className, backgroundColor } = selectedTheme;
+
+        // Update the appearance state
+        const updatedAppearance = {
+            ...appearance,
+            themes: {
+                ...appearance.themes,
+                selectedStyle: themeStyle, // Update the selected theme
+                selectedThemeData: {
+                    className, // Pass the className
+                    backgroundColor, // Pass the backgroundColor
+                },
+            },
+        };
+
+        setAppearance(updatedAppearance); // Update local state
+
+        // Send the updated appearance data to the backend
+        try {
+            await saveAppearanceData(updatedAppearance);
+            console.log("Theme selection saved successfully!");
+        } catch (error) {
+            console.error("Error saving theme selection:", error);
+        }
+    };
+
 
     return (
         <div style={{ display: "flex", height: "100%", backgroundColor: "#f3f3f1", width: "100vw" }}>
@@ -199,7 +251,7 @@ const Appearance = () => {
                                     </div>
                                 </div>
                             </div>
-
+                            {/**buttons  */}
                             <div style={{ backgroundColor: "#fff", padding: "1.5vw", borderRadius: "10px", boxShadow: "0 0 10px rgba(0,0,0,0.1)" }}>
                                 <h3 style={{ marginBottom: "1vw", fontSize: "1.2vw", color: "#333" }}>Buttons</h3>
 
@@ -207,11 +259,11 @@ const Appearance = () => {
                                 <div>
                                     <h4 style={{ marginBottom: "0.5vw" }}>Fill</h4>
                                     <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1vw" }}>
-                                        <div className="norounded-fill" style={{ width: "100%", height: "2vw", border: "2px solid #000", backgroundColor: appearance.buttonStyles.selectedStyle === "norounded-fill" ? "#1DA35E" : "black", cursor: "pointer", borderRadius: "0" }}
+                                        <div className="norounded-fill" style={{ width: "100%", height: "2vw", border: "2px solid #000", backgroundColor: appearance.buttonStyles.className === "norounded-fill" ? "#1DA35E" : "black", cursor: "pointer", borderRadius: "0" }}
                                             onClick={() => handleButtonStyleSelect("norounded-fill")}></div>
-                                        <div className="smrounded-fill" style={{ width: "100%", height: "2vw", border: "2px solid #000", backgroundColor: appearance.buttonStyles.selectedStyle === "smrounded-fill" ? "#1DA35E" : "black", cursor: "pointer", borderRadius: "5px" }}
+                                        <div className="smrounded-fill" style={{ width: "100%", height: "2vw", border: "2px solid #000", backgroundColor: appearance.buttonStyles.className === "smrounded-fill" ? "#1DA35E" : "black", cursor: "pointer", borderRadius: "5px" }}
                                             onClick={() => handleButtonStyleSelect("smrounded-fill")} ></div>
-                                        <div className="lgrounded-fill" style={{ width: "100%", height: "2vw", border: "5px solid #ddd", backgroundColor: appearance.buttonStyles.selectedStyle === "lgrounded-fill" ? "#1DA35E" : "black", cursor: "pointer", borderRadius: "15px" }}
+                                        <div className="lgrounded-fill" style={{ width: "100%", height: "2vw", border: "5px solid #ddd", backgroundColor: appearance.buttonStyles.className === "lgrounded-fill" ? "#1DA35E" : "black", cursor: "pointer", borderRadius: "15px" }}
                                             onClick={() => handleButtonStyleSelect("lgrounded-fill")}></div>
                                     </div>
                                 </div>
@@ -226,7 +278,7 @@ const Appearance = () => {
                                                 width: "100%",
                                                 height: "2vw",
                                                 border: "2px solid #000",
-                                                backgroundColor: appearance.buttonStyles.selectedStyle === "norounded-outline" ? "#1DA35E" : "transparent",
+                                                backgroundColor: appearance.buttonStyles.className === "norounded-outline" ? "#1DA35E" : "transparent",
                                                 borderRadius: "0",
                                                 cursor: "pointer",
                                             }}
@@ -238,7 +290,7 @@ const Appearance = () => {
                                                 width: "100%",
                                                 height: "2vw",
                                                 border: "2px solid #000",
-                                                backgroundColor: appearance.buttonStyles.selectedStyle === "smrounded-outline" ? "#1DA35E" : "transparent",
+                                                backgroundColor: appearance.buttonStyles.className === "smrounded-outline" ? "#1DA35E" : "transparent",
                                                 borderRadius: "5px",
                                                 cursor: "pointer",
                                             }}
@@ -250,7 +302,7 @@ const Appearance = () => {
                                                 width: "100%",
                                                 height: "2vw",
                                                 border: "2px solid #000",
-                                                backgroundColor: appearance.buttonStyles.selectedStyle === "lgrounded-outline" ? "#1DA35E" : "transparent",
+                                                backgroundColor: appearance.buttonStyles.className === "lgrounded-outline" ? "#1DA35E" : "transparent",
                                                 borderRadius: "15px",
                                                 cursor: "pointer",
                                             }}
@@ -268,7 +320,7 @@ const Appearance = () => {
                                                 width: "100%",
                                                 height: "2vw",
                                                 border: "2px solid #000",
-                                                backgroundColor: appearance.buttonStyles.selectedStyle === "norounded-hardshadow" ? "#1DA35E" : "black",
+                                                backgroundColor: appearance.buttonStyles.className === "norounded-hardshadow" ? "#1DA35E" : "black",
                                                 borderRadius: "0",
                                                 boxShadow: "4px 4px 0px rgba(0, 0, 0, 1)",
                                                 cursor: "pointer",
@@ -281,7 +333,7 @@ const Appearance = () => {
                                                 width: "100%",
                                                 height: "2vw",
                                                 border: "2px solid #000",
-                                                backgroundColor: appearance.buttonStyles.selectedStyle === "smrounded-hardshadow" ? "#1DA35E" : "black",
+                                                backgroundColor: appearance.buttonStyles.className === "smrounded-hardshadow" ? "#1DA35E" : "black",
                                                 borderRadius: "5px",
                                                 boxShadow: "4px 4px 0px rgba(0, 0, 0, 1)",
                                                 cursor: "pointer",
@@ -294,7 +346,7 @@ const Appearance = () => {
                                                 width: "100%",
                                                 height: "2vw",
                                                 border: "2px solid #000",
-                                                backgroundColor: appearance.buttonStyles.selectedStyle === "lgrounded-hardshadow" ? "#1DA35E" : "black",
+                                                backgroundColor: appearance.buttonStyles.className === "lgrounded-hardshadow" ? "#1DA35E" : "black",
                                                 borderRadius: "15px",
                                                 boxShadow: "4px 4px 0px rgba(0, 0, 0, 1)",
                                                 cursor: "pointer",
@@ -314,7 +366,7 @@ const Appearance = () => {
                                                 width: "100%",
                                                 height: "2vw",
                                                 border: "2px solid white",
-                                                backgroundColor: appearance.buttonStyles.selectedStyle === "norounded-softshadow" ? "#1DA35E" : "black",
+                                                backgroundColor: appearance.buttonStyles.className === "norounded-softshadow" ? "#1DA35E" : "black",
                                                 borderRadius: "0",
                                                 boxShadow: "4px 4px 0px rgb(241, 239, 239)",
                                                 cursor: "pointer",
@@ -327,7 +379,7 @@ const Appearance = () => {
                                                 width: "100%",
                                                 height: "2vw",
                                                 border: "2px solid white",
-                                                backgroundColor: appearance.buttonStyles.selectedStyle === "smrounded-softshadow" ? "#1DA35E" : "black",
+                                                backgroundColor: appearance.buttonStyles.className === "smrounded-softshadow" ? "#1DA35E" : "black",
                                                 borderRadius: "5px",
                                                 boxShadow: "4px 4px 0px rgb(241, 239, 239)",
                                                 cursor: "pointer",
@@ -340,7 +392,7 @@ const Appearance = () => {
                                                 width: "100%",
                                                 height: "2vw",
                                                 border: "2px solid white",
-                                                backgroundColor: appearance.buttonStyles.selectedStyle === "lgrounded-softshadow" ? "#1DA35E" : "black",
+                                                backgroundColor: appearance.buttonStyles.className === "lgrounded-softshadow" ? "#1DA35E" : "black",
                                                 borderRadius: "15px",
                                                 boxShadow: "4px 4px 0px rgb(241, 239, 239)",
                                                 cursor: "pointer",
@@ -365,7 +417,7 @@ const Appearance = () => {
                                                 height: "2vw",
                                                 position: "relative",
                                                 cursor: "pointer",
-                                                backgroundColor: appearance.buttonStyles.selectedStyle === "torn-button" ? "#1DA35E" : "black",
+                                                backgroundColor: appearance.buttonStyles.className === "torn-button" ? "#1DA35E" : "black",
                                                 clipPath: "polygon(0% 10%, 5% 15%, 10% 10%, 15% 15%, 20% 10%, 25% 15%, 30% 10%, 35% 15%, 40% 10%, 45% 15%, 50% 10%, 55% 15%, 60% 10%, 65% 15%, 70% 10%, 75% 15%, 80% 10%, 85% 15%, 90% 10%, 95% 15%, 100% 10%, 100% 90%, 95% 85%, 90% 90%, 85% 85%, 80% 90%, 75% 85%, 70% 90%, 65% 85%, 60% 90%, 55% 85%, 50% 90%, 45% 85%, 40% 90%, 35% 85%, 30% 90%, 25% 85%, 20% 90%, 15% 85%, 10% 90%, 5% 85%, 0% 90%)",
                                             }}
                                         ></div>
@@ -378,7 +430,7 @@ const Appearance = () => {
                                                 backgroundColor: "black",
                                                 position: "relative",
                                                 cursor: "pointer",
-                                                backgroundColor: appearance.buttonStyles.selectedStyle === "wave-button" ? "#1DA35E" : "black",
+                                                backgroundColor: appearance.buttonStyles.className === "wave-button" ? "#1DA35E" : "black",
                                                 clipPath: "polygon(0% 85%, 6.25% 75%, 12.5% 85%, 18.75% 75%, 25% 85%, 31.25% 75%, 37.5% 85%, 43.75% 75%, 50% 85%, 56.25% 75%, 62.5% 85%, 68.75% 75%, 75% 85%, 81.25% 75%, 87.5% 85%, 93.75% 75%, 100% 85%, 100% 15%, 93.75% 25%, 87.5% 15%, 81.25% 25%, 75% 15%, 68.75% 25%, 62.5% 15%, 56.25% 25%, 50% 15%, 43.75% 25%, 37.5% 15%, 31.25% 25%, 25% 15%, 18.75% 25%, 12.5% 15%, 6.25% 25%, 0% 15%)"
                                             }}>
                                         </div>
@@ -390,7 +442,7 @@ const Appearance = () => {
                                             width: "100%", height: "2vw", backgroundColor: "white",
                                             border: "2px solid black", position: "relative",
                                             cursor: "pointer",
-                                            backgroundColor: appearance.buttonStyles.selectedStyle === "doubleborder-button" ? "#1DA35E" : "white"
+                                            backgroundColor: appearance.buttonStyles.className === "doubleborder-button" ? "#1DA35E" : "white"
                                         }}>
                                             <div
                                                 onClick={() => handleButtonStyleSelect("doubleborder-button")}
@@ -410,7 +462,7 @@ const Appearance = () => {
                                             style={{
                                                 width: "100%", height: "2vw", border: "2px solid black", backgroundColor: "black",
                                                 borderRadius: "50px", cursor: "pointer",
-                                                backgroundColor: appearance.buttonStyles.selectedStyle === "rounded-button" ? "#1DA35E" : "black"
+                                                backgroundColor: appearance.buttonStyles.className === "rounded-button" ? "#1DA35E" : "black"
                                             }}></div>
 
                                         {/* Editable Rectangle Effect */}
@@ -419,7 +471,7 @@ const Appearance = () => {
                                             style={{
                                                 width: "100%", height: "2vw", border: "2px solid black",
                                                 position: "relative", cursor: "pointer",
-                                                backgroundColor: appearance.buttonStyles.selectedStyle === "rectangle-button" ? "#1DA35E" : "white"
+                                                backgroundColor: appearance.buttonStyles.className === "rectangle-button" ? "#1DA35E" : "white"
                                             }}>
                                             <div style={{
                                                 width: "0.5vw", height: "0.5vw", backgroundColor: "white",
@@ -446,10 +498,12 @@ const Appearance = () => {
                                             style={{
                                                 width: "100%", height: "2.2vw", backgroundColor: "black",
                                                 borderRadius: "50px 0px 0px 50px", cursor: "pointer",
-                                                backgroundColor: appearance.buttonStyles.selectedStyle === "halfrounded-button" ? "#1DA35E" : "black"
+                                                backgroundColor: appearance.buttonStyles.className === "halfrounded-button" ? "#1DA35E" : "black"
                                             }}></div>
                                     </div>
                                 </div>
+
+
 
 
                                 {/* Button Color & Font Color */}
@@ -475,7 +529,16 @@ const Appearance = () => {
                                         }}
                                         placeholder="Button Color"
                                         value={buttonColor}
-                                        onChange={(e) => setButtonColor(e.target.value)}
+                                        onChange={(e) => {
+                                            setButtonColor(e.target.value); // Update context
+                                            setAppearance((prev) => ({
+                                                ...prev,
+                                                buttonStyles: {
+                                                    ...prev.buttonStyles,
+                                                    buttonColor: e.target.value, // Update local state
+                                                },
+                                            }));
+                                        }}
                                     />
                                 </div>
 
@@ -501,7 +564,16 @@ const Appearance = () => {
                                         }}
                                         placeholder="Button Font Color"
                                         value={buttonFontColor}
-                                        onChange={(e) => setButtonFontColor(e.target.value)}
+                                        onChange={(e) => {
+                                            setButtonFontColor(e.target.value); // Update context
+                                            setAppearance((prev) => ({
+                                                ...prev,
+                                                buttonStyles: {
+                                                    ...prev.buttonStyles,
+                                                    fontColor: e.target.value, // Update local state
+                                                },
+                                            }));
+                                        }}
                                     />
                                 </div>
                             </div>
@@ -515,10 +587,10 @@ const Appearance = () => {
                                     <h3>DM SANS</h3>
                                 </div>
                                 <h4 style={{ marginBottom: "0.5vw" }}>Font Color</h4>
-                                < div style={{ display: "flex", gap: "1vw", marginTop: "1vw" }}>
+                                <div style={{ display: "flex", gap: "1vw", marginTop: "1vw" }}>
                                     <div
                                         style={{
-                                            backgroundColor: FontColor || "#ddd",
+                                            backgroundColor: buttonFontColor || "#ddd",
                                             padding: "1vw",
                                             borderRadius: "5px",
                                             width: "6%",
@@ -534,8 +606,17 @@ const Appearance = () => {
                                             width: "30%",
                                         }}
                                         placeholder="Button Font Color"
-                                        value={FontColor}
-                                        onChange={(e) => setFontColor(e.target.value)}
+                                        value={buttonFontColor}
+                                        onChange={(e) => {
+                                            setButtonFontColor(e.target.value); // Update context
+                                            setAppearance((prev) => ({
+                                                ...prev,
+                                                buttonStyles: {
+                                                    ...prev.buttonStyles,
+                                                    fontColor: e.target.value, // Update local state
+                                                },
+                                            }));
+                                        }}
                                     />
                                 </div>
                             </div>
@@ -549,7 +630,13 @@ const Appearance = () => {
 
 
                                     {/* Air Snow */}
-                                    <div className="air-snow" style={{ backgroundColor: "#ffffff", borderRadius: "10px", height: '12vw', padding: "1vw", boxShadow: "0 0 5px rgba(0,0,0,0.1)", border: "1px solid #ddd" }}>
+                                    <div className="air-snow"
+                                        onClick={() => handleThemeStyleSelect("air-snow")}
+                                        style={{
+                                            borderRadius: "10px", height: '12vw', padding: "1vw", boxShadow: "0 0 5px rgba(0,0,0,0.1)", border: "1px solid #ddd"
+                                            , cursor: "pointer",
+                                            backgroundColor: appearance.themes.selectedStyle === "air-snow" ? "#1DA35E" : "#ffffff"
+                                        }}>
                                         <div style={{ width: "100%", backgroundColor: "#ffffff", borderRadius: "10px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "0.7vw" }}>
                                             <div style={{ width: "100%", height: "1vw", backgroundColor: "#ccc", borderRadius: "5px" }}></div>
                                             <div style={{ width: "100%", height: "1vw", backgroundColor: "#ccc", borderRadius: "5px" }}></div>
@@ -560,7 +647,12 @@ const Appearance = () => {
                                     </div>
 
                                     {/* Air Grey */}
-                                    <div className="air-grey" style={{ backgroundColor: "#EBEEF1", borderRadius: "10px", height: '12vw', padding: "1vw", boxShadow: "0 0 5px rgba(0,0,0,0.1)", border: "1px solid #ddd" }}>
+                                    <div className="air-grey"
+                                        onClick={() => handleThemeStyleSelect("air-grey")}
+                                        style={{
+                                            cursor: "pointer",
+                                            backgroundColor: appearance.themes.selectedStyle === "air-grey" ? "#1DA35E" : "#EBEEF1", borderRadius: "10px", height: '12vw', padding: "1vw", boxShadow: "0 0 5px rgba(0,0,0,0.1)", border: "1px solid #ddd"
+                                        }}>
                                         <div style={{ width: "100%", backgroundColor: "#EBEEF1", borderRadius: "10px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "0.7vw" }}>
                                             <div style={{ width: "100%", height: "1vw", backgroundColor: "#fff", borderRadius: "5px" }}></div>
                                             <div style={{ width: "100%", height: "1vw", backgroundColor: "#fff", borderRadius: "5px" }}></div>
@@ -571,7 +663,12 @@ const Appearance = () => {
                                     </div>
 
                                     {/* Air Smoke */}
-                                    <div className="air-smoke" style={{ backgroundColor: "#2A3235", borderRadius: "10px", height: '12vw', padding: "1vw", boxShadow: "0 0 5px rgba(0,0,0,0.1)", border: "1px solid #ddd" }}>
+                                    <div className="air-smoke"
+                                        onClick={() => handleThemeStyleSelect("air-smoke")}
+                                        style={{
+                                            cursor: "pointer",
+                                            backgroundColor: appearance.themes.selectedStyle === "air-smoke" ? "#1DA35E" : "#2A3235", borderRadius: "10px", height: '12vw', padding: "1vw", boxShadow: "0 0 5px rgba(0,0,0,0.1)", border: "1px solid #ddd"
+                                        }}>
                                         <div style={{ width: "100%", backgroundColor: "#2A3235", borderRadius: "10px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "0.7vw" }}>
                                             <div style={{ width: "100%", height: "1vw", backgroundColor: "#ccc", borderRadius: "5px" }}></div>
                                             <div style={{ width: "100%", height: "1vw", backgroundColor: "#ccc", borderRadius: "5px" }}></div>
@@ -582,7 +679,12 @@ const Appearance = () => {
                                     </div>
 
                                     {/* Air Black */}
-                                    <div className="air-black" style={{ backgroundColor: "black", borderRadius: "10px", height: '12vw', padding: "1vw", boxShadow: "0 0 5px rgba(0,0,0,0.1)", border: "1px solid #ddd" }}>
+                                    <div className="air-black"
+                                        onClick={() => handleThemeStyleSelect("air-black")}
+                                        style={{
+                                            cursor: "pointer",
+                                            backgroundColor: appearance.themes.selectedStyle === "air-black" ? "#1DA35E" : "black", borderRadius: "10px", height: '12vw', padding: "1vw", boxShadow: "0 0 5px rgba(0,0,0,0.1)", border: "1px solid #ddd"
+                                        }}>
                                         <div style={{ width: "100%", backgroundColor: "black", borderRadius: "10px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "0.7vw" }}>
                                             <div style={{ width: "100%", height: "1vw", backgroundColor: "#1c1c1c", borderRadius: "5px" }}></div>
                                             <div style={{ width: "100%", height: "1vw", backgroundColor: "#1c1c1c", borderRadius: "5px" }}></div>
@@ -592,7 +694,12 @@ const Appearance = () => {
 
                                     </div>
                                     {/* Mineral Blue */}
-                                    <div className="mineral-blue" style={{ backgroundColor: "#E0F6FF", borderRadius: "10px", height: '12vw', padding: "1vw", boxShadow: "0 0 5px rgba(0,0,0,0.1)", border: "1px solid #ddd" }}>
+                                    <div className="mineral-blue"
+                                        onClick={() => handleThemeStyleSelect("mineral-blue")}
+                                        style={{
+                                            cursor: "pointer",
+                                            backgroundColor: appearance.themes.selectedStyle === "mineral-blue" ? "#1DA35E" : "#E0F6FF", borderRadius: "10px", height: '12vw', padding: "1vw", boxShadow: "0 0 5px rgba(0,0,0,0.1)", border: "1px solid #ddd"
+                                        }}>
                                         <div style={{ width: "100%", backgroundColor: "#E0F6FF", borderRadius: "10px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "0.7vw" }}>
                                             <div style={{ width: "100%", height: "1vw", backgroundColor: "#ccc", borderRadius: "5px" }}></div>
                                             <div style={{ width: "100%", height: "1vw", backgroundColor: "#ccc", borderRadius: "5px" }}></div>
@@ -603,7 +710,12 @@ const Appearance = () => {
                                     </div>
 
                                     {/* Mineral Green */}
-                                    <div className="mineral-green" style={{ backgroundColor: "#E0FAEE", borderRadius: "10px", height: '12vw', padding: "1vw", boxShadow: "0 0 5px rgba(0,0,0,0.1)", border: "1px solid #ddd" }}>
+                                    <div className="mineral-green"
+                                        onClick={() => handleThemeStyleSelect("mineral-green")}
+                                        style={{
+                                            cursor: "pointer",
+                                            backgroundColor: appearance.themes.selectedStyle === "mineral-green" ? "#1DA35E" : "#E0FAEE", borderRadius: "10px", height: '12vw', padding: "1vw", boxShadow: "0 0 5px rgba(0,0,0,0.1)", border: "1px solid #ddd"
+                                        }}>
                                         <div style={{ width: "100%", backgroundColor: "#E0FAEE", borderRadius: "10px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "0.7vw" }}>
                                             <div style={{ width: "100%", height: "1vw", backgroundColor: "#ccc", borderRadius: "5px" }}></div>
                                             <div style={{ width: "100%", height: "1vw", backgroundColor: "#ccc", borderRadius: "5px" }}></div>
@@ -614,7 +726,12 @@ const Appearance = () => {
                                     </div>
 
                                     {/* Mineral Orange */}
-                                    <div className="mineral-orange" style={{ backgroundColor: "#FFEAE2", borderRadius: "10px", height: '12vw', padding: "1vw", boxShadow: "0 0 5px rgba(0,0,0,0.1)", border: "1px solid #ddd" }}>
+                                    <div className="mineral-orange"
+                                        onClick={() => handleThemeStyleSelect("mineral-orange")}
+                                        style={{
+                                            cursor: "pointer",
+                                            backgroundColor: appearance.themes.selectedStyle === "mineral-orange" ? "#1DA35E" : "#FFEAE2", borderRadius: "10px", height: '12vw', padding: "1vw", boxShadow: "0 0 5px rgba(0,0,0,0.1)", border: "1px solid #ddd"
+                                        }}>
                                         <div style={{ width: "100%", backgroundColor: "#FFEAE2", borderRadius: "10px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "0.7vw" }}>
                                             <div style={{ width: "100%", height: "1vw", backgroundColor: "#ccc", borderRadius: "5px" }}></div>
                                             <div style={{ width: "100%", height: "1vw", backgroundColor: "#ccc", borderRadius: "5px" }}></div>
@@ -624,7 +741,12 @@ const Appearance = () => {
 
                                     </div>
                                     {/**mineral yellow */}
-                                    <div className="mineral-yellow" style={{ backgroundColor: "#FFF8E0", borderRadius: "10px", height: '12vw', padding: "1vw", boxShadow: "0 0 5px rgba(0,0,0,0.1)", border: "1px solid #ddd" }}>
+                                    <div className="mineral-yellow"
+                                        onClick={() => handleThemeStyleSelect("mineral-yellow")}
+                                        style={{
+                                            cursor: "pointer",
+                                            backgroundColor: appearance.themes.selectedStyle === "mineral-yellow" ? "#1DA35E" : "#FFF8E0", borderRadius: "10px", height: '12vw', padding: "1vw", boxShadow: "0 0 5px rgba(0,0,0,0.1)", border: "1px solid #ddd"
+                                        }}>
                                         <div style={{ width: "100%", backgroundColor: "#FFF8E0", borderRadius: "10px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "0.7vw" }}>
                                             <div style={{ width: "100%", height: "1vw", backgroundColor: "#ccc", borderRadius: "5px" }}></div>
                                             <div style={{ width: "100%", height: "1vw", backgroundColor: "#ccc", borderRadius: "5px" }}></div>
@@ -647,7 +769,9 @@ const Appearance = () => {
 
                 <div style={{ display: "flex", padding: "1vw", alignItems: "center", justifyContent: "flex-end" }}>
                     {/* Save Button */}
-                    <button style={{ marginTop: "2vw", padding: "0.4vw 2.2vw", width: "6vw", backgroundColor: "#1DA35E", color: "#fff", border: "none", borderRadius: "0.5vw" }}>Save</button>
+                    <button
+                        onClick={handleSaveAppearance} // Add onClick handler
+                        style={{ cursor: "pointer", marginTop: "2vw", padding: "0.4vw 2.2vw", width: "6vw", backgroundColor: "#1DA35E", color: "#fff", border: "none", borderRadius: "0.5vw" }}>Save</button>
                 </div>
 
 

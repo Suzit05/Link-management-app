@@ -1,91 +1,147 @@
 import React from 'react';
 import sparklogo from "../assets/images/sparklogo.png";
 import { useProfile } from "../Context/ProfileContext";
+import { useAppearance } from '../Context/AppearanceContext';
+
+//...themes pr kaam kro.......mobile m add kro
+////////////themes////////
 
 const Mobile = () => {
-    const { profile } = useProfile(); // Use profile context
+    const { profile } = useProfile();
     const { profileImage, bannerColor, profileTitle, links = [], Shop = [] } = profile;
 
+    const { appearance, buttonColor, buttonFontColor, themeBackgroundColor } = useAppearance();
+    const { layout } = appearance;
+
+    console.log("Current layout type:", layout.type);
+    console.log("Current theme background color:", themeBackgroundColor);
+
+    const layoutType = layout.type;
+
+    // Apply layout styles dynamically
+    const layoutStyle = {
+        display: layoutType === "carousel" ? "flex" : layoutType === "grid" ? "grid" : "flex",
+        flexDirection: layoutType === "carousel" ? "row" : layoutType === "stack" ? "column" : "initial",
+        alignItems: "center",
+        justifyContent: layoutType === "carousel" ? "center" : "initial",
+        gap: layoutType === "grid" ? "1vw" : layoutType === "carousel" ? "0.5vw" : "0.8vw",
+        gridTemplateColumns: layoutType === "grid" ? "repeat(2, 1fr)" : "none",
+        width: "100%",
+    };
+
+    const buttonStyle = {
+        width: layoutType === "carousel" ? "18vw" : layoutType === "grid" ? "7vw" : "90%",
+        height: layoutType === "carousel" ? "12vw" : layoutType === "grid" ? "3vw" : "3.5vw",
+        fontSize: layoutType === "carousel" ? "1vw" : layoutType === "grid" ? "0.9vw" : "1vw",
+        backgroundColor: buttonColor,  // ✅ Dynamic color from context
+        color: buttonFontColor,  // ✅ Dynamic font color from context
+        border: "none",
+        borderRadius: layoutType === "stack" ? "1vw" : "0.5vw",
+        textAlign: "center",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+    };
+
     return (
-        <div style={{ flex: "0.3", borderRadius: "1vw", textAlign: "center" }}>
-            <div style={{ width: "16vw", height: "35vw", border: "1vw solid black", borderRadius: "5vw", padding: 0 }}>
-                {/* Banner Section */}
-                <div
-                    className="mobile-banner"
-                    style={{
-                        width: "100%",
-                        height: "12vw",
-                        display: "flex",
-                        flexDirection: "column",
-                        backgroundColor: bannerColor || "#342B26", // Use bannerColor if provided
-                        margin: 0,
-                        padding: 0,
-                        borderRadius: "3.9vw",
-                    }}
-                >
-                    <button style={{ position: "absolute", width: "2.2vw", backgroundColor: "#F0F0F0", height: "2vw", borderRadius: "50%", marginLeft: "1.5vw", marginTop: "1.5vh" }}>
-                        <i className="ri-upload-2-line"></i>
-                    </button>
-                    {/* Profile Image */}
-                    <div
-                        className="dp"
-                        style={{
-                            alignItems: "center",
-                            justifyContent: "center",
-                            marginTop: "4vw",
-                            marginLeft: "5vw",
-                            borderRadius: "50%",
-                            backgroundColor: "red",
-                            height: '12vh',
-                            width: "5vw",
-                            backgroundImage: profileImage ? `url(${profileImage})` : "none", // Use profileImage if provided
-                            backgroundSize: "cover",
-                            backgroundPosition: "center",
-                        }}
-                    ></div>
-                    {/* Profile Title */}
+        <div style={{
+            flex: "0.3", borderRadius: "1vw", textAlign: "center",
+
+        }}>
+            <div style={{
+                width: "16vw",
+                height: "38vw",
+                border: "1vw solid black",
+                borderRadius: "5vw",
+                padding: 0,
+                backgroundColor: themeBackgroundColor  // ✅ Background updates correctly now// ✅ Dynamic background from selected theme
+            }}>
+                <div className="mobile-banner" style={{
+                    width: "100%",
+                    height: "12vw",
+                    display: "flex",
+                    flexDirection: "column",
+                    backgroundColor: bannerColor || "#342B26",
+                    margin: 0,
+                    padding: 0,
+                    borderRadius: "3.9vw",
+                }}>
+                    <div className="dp" style={{
+                        alignItems: "center",
+                        justifyContent: "center",
+                        marginTop: "4vw",
+                        marginLeft: "5vw",
+                        borderRadius: "50%",
+                        height: '12vh',
+                        width: "5vw",
+                        backgroundImage: profileImage ? `url(${profileImage})` : "none",
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                    }}></div>
                     <h3 style={{ fontSize: "1vw", color: "white" }}>{profileTitle || "profile"}</h3>
                 </div>
 
-                {/* Toggle Buttons */}
-                <div className="toggle-btn" style={{ width: "12vw", display: "flex", gap: 0, marginTop: "2vh", marginLeft: "2vw", backgroundColor: "#ddd" }}>
-                    <button style={{ padding: "1vw", width: "40%", backgroundColor: "#1DA35E", color: "#fff", border: "none", borderRadius: "0.5vw" }}>Link</button>
-                    <button style={{ padding: "1vw", width: "40%", backgroundColor: "#ddd", color: "#000", border: "none", borderRadius: "0.5vw" }}>Shop</button>
+                <div style={{
+                    width: "fit-content",
+                    marginLeft: "3.5vw",
+                    marginTop: "1vw",
+                    display: "flex",
+                    gap: "0",
+                    backgroundColor: "#ddd",
+                    borderRadius: "1vw"
+                }}>
+                    <button style={{
+                        backgroundColor: "#1DA35E",
+                        border: "none",
+                        borderRadius: "2vw",
+                        padding: "0.6vw 1.2vw",
+                    }}>
+                        Link
+                    </button>
+                    <button style={{
+                        backgroundColor: "#ddd",
+                        border: "none",
+                        borderRadius: "2vw",
+                        padding: "0.6vw 1.2vw",
+                    }}>
+                        Shop
+                    </button>
                 </div>
 
-                {/* Links Section */}
-                <div style={{ textAlign: "left", marginTop: "2vw" }}>
-                    {links.map((link, index) => (
-                        <button
-                            key={index}
-                            style={{ padding: "1vw", width: "100%", backgroundColor: "#ddd", border: "none", borderRadius: "0.5vw", marginBottom: "1vw" }}
-                        >
-                            📺 {link.title}
-                        </button>
-                    ))}
+                <div style={{
+                    maxHeight: "15vw", overflowX: "auto", overflowY: "auto", paddingRight: "0.5vw", padding: "1vw", scrollbarWidth: "none", // Hides scrollbar in Firefox
+                    msOverflowStyle: "none", // Hides scrollbar in IE/Edge
+                    "&::-webkit-scrollbar": { // Hides scrollbar in WebKit browsers (Chrome, Safari, etc.)
+                        display: "none",
+                    },
+                }}>
+                    <div style={layoutStyle}>
+                        {links.map((link, index) => (
+                            <button key={index} style={buttonStyle}>
+                                📺 {link.title}
+                            </button>
+                        ))}
+                    </div>
+                    <div style={layoutStyle}>
+                        {Shop.map((shop, index) => (
+                            <button key={index} style={buttonStyle}>
+                                🛍️ {shop.title}
+                            </button>
+                        ))}
+                    </div>
                 </div>
 
-                {/* Shop Section */}
-                <div style={{ textAlign: "left", marginTop: "2vw" }}>
-                    {Shop.map((shop, index) => (
-                        <button
-                            key={index}
-                            style={{ padding: "1vw", width: "100%", backgroundColor: "#ddd", border: "none", borderRadius: "0.5vw", marginBottom: "1vw" }}
-                        >
-                            🛍️ {shop.title}
-                        </button>
-                    ))}
-                </div>
-
-                {/* Get Connected Button */}
-                <button style={{ marginTop: "2vw", padding: "0.5vw", width: "80%", backgroundColor: "#1DA35E", color: "#fff", border: "none", borderRadius: "1vw" }}>
+                <button style={{
+                    marginTop: "2vw",
+                    padding: "0.5vw",
+                    width: "80%",
+                    backgroundColor: "#1DA35E",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "1vw"
+                }}>
                     Get Connected
                 </button>
-
-                {/* Spark Logo */}
-                <div style={{ width: "fit-content", justifyContent: "center", alignItems: "center", display: "flex", marginTop: "1vh", marginLeft: "5.7vw" }}>
-                    <img style={{ width: "4vw" }} src={sparklogo} alt="" />
-                </div>
             </div>
         </div>
     );
