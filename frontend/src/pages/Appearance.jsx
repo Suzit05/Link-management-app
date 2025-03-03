@@ -10,6 +10,8 @@ const Appearance = () => {
     const { user } = useContext(UserContext); // Get user data from context
     const { buttonColor, setButtonColor, buttonFontColor, setButtonFontColor, FontColor, setFontColor } = useAppearance()
 
+    const userId = user?._id;    // Extract user ID
+
 
     const { appearance, setAppearance } = useAppearance(); // Use AppearanceContext
     // Fetch profile data on component mount
@@ -82,9 +84,9 @@ const Appearance = () => {
             const data = await response.json();
             if (response.ok) {
                 alert("Appearance saved successfully!");
-                // setTimeout(() => {
-                //     window.location.href = "/analytics"; // Update with your dashboard route
-                // }, 2000);
+                setTimeout(() => {
+                    window.location.href = "/analytics"; // Update with your dashboard route
+                }, 2000);
             } else {
                 alert(data.message || "Failed to save appearance");
             }
@@ -183,7 +185,7 @@ const Appearance = () => {
 
                 <div style={{ display: "flex", gap: "10vw" }}>
                     {/* Mobile Preview */}
-                    <Mobile></Mobile>
+                    <Mobile ></Mobile>
 
 
                     {/* Profile Customization */}

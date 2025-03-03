@@ -2,14 +2,15 @@ import React from 'react';
 import sparklogo from "../assets/images/sparklogo.png";
 import { useProfile } from "../Context/ProfileContext";
 import { useAppearance } from '../Context/AppearanceContext';
+import { useAnalytics } from '../Context/AnalyticsContext';
 
-//...themes pr kaam kro.......mobile m add kro
-////////////themes////////
+
 
 const Mobile = () => {
     const { profile } = useProfile();
+    const userId = profile?.userId; // ✅ Extract userId from profile
     const { profileImage, bannerColor, profileTitle, links = [], Shop = [] } = profile;
-
+    const { clickCounts, trackClick } = useAnalytics(); // Use analytics
     const { appearance, buttonColor, buttonFontColor, themeBackgroundColor } = useAppearance();
     const { layout } = appearance;
 
@@ -41,7 +42,10 @@ const Mobile = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        cursor: "pointer"
     };
+
+
 
     return (
         <div style={{
@@ -117,19 +121,24 @@ const Mobile = () => {
                 }}>
                     <div style={layoutStyle}>
                         {links.map((link, index) => (
-                            <button key={index} style={buttonStyle}>
+                            <button key={index} style={buttonStyle}
+                                onClick={() => trackClick(userId, "link", link.id || `link-${index}`)}
+                            >
                                 📺 {link.title}
                             </button>
                         ))}
                     </div>
                     <div style={layoutStyle}>
                         {Shop.map((shop, index) => (
-                            <button key={index} style={buttonStyle}>
+                            <button key={index} style={buttonStyle}
+                                onClick={() => trackClick(userId, "shop", shop.id || `shop-${index}`)}
+                            >
                                 🛍️ {shop.title}
                             </button>
                         ))}
                     </div>
                 </div>
+
 
                 <button style={{
                     marginTop: "2vw",
@@ -139,11 +148,11 @@ const Mobile = () => {
                     color: "#fff",
                     border: "none",
                     borderRadius: "1vw"
-                }}>
+                }} onClick={() => trackClick(userId, "cta", "cta-button")}>
                     Get Connected
                 </button>
             </div>
-        </div>
+        </div >
     );
 };
 

@@ -11,33 +11,36 @@ import Links from './pages/Links'
 import Appearance from './pages/Appearance'
 import Analytics from './pages/Analytics'
 import Settings from './pages/Settings'
+import { AnalyticsProvider } from './Context/AnalyticsContext';
 
 
 
 const App = () => {
   return (
-    <AppearanceProvider>
-      <ProfileProvider>
-        <UserProvider>
+    <AnalyticsProvider>
+      <AppearanceProvider>
+        <ProfileProvider>
+          <UserProvider>
 
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/aboutuser" element={<Aboutuser />} />
-              <Route path="/Links" element={<Links />} />
-              <Route path="/Appearance" element={<Appearance />} />
-              <Route path="/Analytics" element={<Analytics />} />
-              <Route path="/Settings" element={<Settings />} />
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/aboutuser" element={<Aboutuser />} />
+                <Route path="/Links" element={<Links />} />
+                <Route path="/Appearance" element={<Appearance />} />
+                <Route path="/Analytics" element={<Analytics />} />
+                <Route path="/Settings" element={<Settings />} />
 
 
-            </Routes>
-          </BrowserRouter>
+              </Routes>
+            </BrowserRouter>
 
-        </UserProvider>
-      </ProfileProvider>
-    </AppearanceProvider>
+          </UserProvider>
+        </ProfileProvider>
+      </AppearanceProvider>
+    </AnalyticsProvider>
 
 
 

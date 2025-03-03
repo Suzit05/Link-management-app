@@ -116,8 +116,13 @@ export const AppearanceProvider = ({ children }) => {
         fetchAppearanceData();
     }, []);
 
+
+    // Derive themeBackgroundColor from the appearance state
+    const themeBackgroundColor = appearance.themes.selectedThemeData.backgroundColor;
+
+
     return (
-        <AppearanceContext.Provider value={{ appearance, setAppearance, saveAppearanceData, buttonColor, setButtonColor, buttonFontColor, setButtonFontColor }}>
+        <AppearanceContext.Provider value={{ appearance, setAppearance, saveAppearanceData, buttonColor, setButtonColor, buttonFontColor, setButtonFontColor, themeBackgroundColor }}>
             {children}
         </AppearanceContext.Provider>
     );

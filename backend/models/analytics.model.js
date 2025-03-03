@@ -1,29 +1,11 @@
-const mongoose = require("mongoose")
-const Schema = mongoose.Schema;
+const mongoose = require("mongoose");
 
-const analyticSchema = new Schema({
-    userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true
-    },
-    linkTitle: { type: String, required: true },
-    linkId: { type: mongoose.Schema.Types.ObjectId, ref: "Link", required: true },
-    uniqueViews: { type: Number, default: 0 },
-    totalClicks: { type: Number, default: 0 },
-    deviceType: {
-        mobile: { type: Number, default: 0 },
-        desktop: { type: Number, default: 0 },
-        tablet: { type: Number, default: 0 },
-    },
-    location: {
-        country: String,
-        city: String,
-    },
-    referrer: String,  // Tracks referrer source like social media, direct
+const analyticsSchema = new mongoose.Schema({
+    userId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" },
+    type: { type: String, enum: ["link", "shop", "cta"], required: true },
+    itemId: { type: String, required: true }, // Unique ID of link/shop/cta
+    count: { type: Number, default: 0 }
 }, { timestamps: true });
 
-
-
-
-module.exports = mongoose.model("Analytics", analyticSchema)
+const Analytics = mongoose.model("Analytics", analyticsSchema);
+module.exports = Analytics;

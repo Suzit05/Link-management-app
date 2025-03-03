@@ -1,41 +1,38 @@
 const express = require("express");
-const analyticsModel = require("../models/analytics.model");
-const authMiddleware = require("../middleware/auth");
 const router = express.Router();
+const Analytics = require("../models/analytics.model");
 
-// Track a link click
-router.post("/track", async (req, res, next) => {
+// Track a click
+router.post("/track-click", async (req, res) => {
     try {
-        const { userId, linkTitle, linkId } = req.body;
+        const { userId, type, itemId } = req.body;
 
-        if (!userId || !linkTitle || !linkId) {
-            return res.status(400).json({ message: "userId, linkTitle, and linkId are required" });
+        let analytics = await Analytics.findOne({ userId, type, itemId });
+
+        if (!analytics) {
+            analytics = new Analytics({ userId, type, itemId, count: 1 });
+        } else {
+            analytics.count += 1;
         }
 
-        const analytics = new analyticsModel({
-            userId,
-            linkTitle,
-            linkId,
-            ip: req.ip
-        });
         await analytics.save();
-
-        res.status(200).json({ message: "Click tracked" });
-    } catch (err) {
-        next(err);
+        res.status(200).json({ success: true, message: "Click tracked successfully" });
+    } catch (error) {
+        console.error("Error tracking click:", error);
+        res.status(500).json({ success: false, message: "Server error", error: error.message });
     }
 });
 
-// Get analytics data for user
-router.get("/", authMiddleware, async (req, res, next) => {
+// Get analytics data for a user
+router.get("/get-analytics/:userId", async (req, res) => {
     try {
-        const analytics = await analyticsModel.aggregate([
-            { $match: { userId: req.user.id } },
-            { $group: { _id: "$linkTitle", count: { $sum: 1 } } }
-        ]);
-        res.status(200).json(analytics);
-    } catch (err) {
-        next(err);
+        const { userId } = req.params;
+        const analyticsData = await Analytics.find({ userId });
+
+        res.status(200).json({ success: true, analytics: analyticsData });
+    } catch (error) {
+        console.error("Error fetching analytics:", error);
+        res.status(500).json({ success: false, error: error.message });
     }
 });
 
