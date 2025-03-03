@@ -4,6 +4,9 @@ import Mobile from "../Components/Mobile";
 import Modal from "../Components/Modal";
 import { UserContext } from "../Context/UserContext";
 import { useProfile } from "../Context/ProfileContext";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { FaCheckCircle, FaExclamationTriangle } from "react-icons/fa"; // Import icons
 
 const Links = () => {
     const { profile, setProfile } = useProfile(); // Use profile context
@@ -77,6 +80,17 @@ const Links = () => {
         }
     };
 
+    //toast message
+    const showToast = (message, type) => {
+        toast(
+            <div style={type === "success" ? successToastStyle : errorToastStyle}>
+                {type === "success" ? <FaCheckCircle style={{ marginRight: "10px" }} /> : <FaExclamationTriangle style={{ marginRight: "10px" }} />}
+                {message}
+            </div>,
+            { className: "custom-toast", closeButton: false, autoClose: 3000 }
+        );
+    };
+
     // Handle save button click
     const handleSaveProfile = async () => {
         try {
@@ -91,22 +105,23 @@ const Links = () => {
 
             const data = await response.json();
             if (response.ok) {
-                alert("Profile saved successfully!");
+                showToast("Profile saved successfully!", "success");
                 // Redirect to appearance page
                 setTimeout(() => {
                     window.location.href = "/appearance"; // Update with your dashboard route
                 }, 2000);
             } else {
-                alert(data.message || "Failed to save profile");
+                showToast(data.message || "Failed to save profile", "error");
             }
         } catch (error) {
             console.error("Error saving profile:", error);
-            alert("An error occurred. Please try again.");
+            showToast("An error occurred. Please try again.", "error");
         }
     };
 
     return (
         <div style={{ display: "flex", height: "100%", backgroundColor: "#f3f3f1", width: "100vw" }}>
+            <ToastContainer position="top-center" autoClose={3000} />
             <Sidebar></Sidebar>
             {/* Main Content */}
             <div style={{ flex: 1, padding: "2vw" }}>
@@ -315,6 +330,27 @@ const Links = () => {
             </div>
         </div>
     );
+};
+
+// Custom Toast Styles
+const successToastStyle = {
+    display: "flex",
+    alignItems: "center",
+    backgroundColor: "#28A745",
+    color: "white",
+    padding: "10px 15px",
+    borderRadius: "5px",
+    fontWeight: "bold",
+};
+
+const errorToastStyle = {
+    display: "flex",
+    alignItems: "center",
+    backgroundColor: "#DC3545",
+    color: "white",
+    padding: "10px 15px",
+    borderRadius: "5px",
+    fontWeight: "bold",
 };
 
 export default Links;

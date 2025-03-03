@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import sparklogo from "../assets/images/sparklogo.png";
 import woman from "../assets/images/woman.png";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { FaCheckCircle, FaExclamationTriangle } from "react-icons/fa"; // Import icons
+
+
+
+//suresh@gmail.com
+//22221111
 
 const Aboutuser = () => {
     // State for username
@@ -17,6 +25,17 @@ const Aboutuser = () => {
     const handleUsernameChange = (e) => {
         setUsername(e.target.value);
     };
+
+    const showToast = (message, type) => {
+        toast(
+            <div style={type === "success" ? successToastStyle : errorToastStyle}>
+                {type === "success" ? <FaCheckCircle style={{ marginRight: "10px" }} /> : <FaExclamationTriangle style={{ marginRight: "10px" }} />}
+                {message}
+            </div>,
+            { className: "custom-toast", closeButton: false, autoClose: 3000 }
+        );
+    };
+
 
     // Handle category selection
     const handleCategoryClick = (category) => {
@@ -45,18 +64,18 @@ const Aboutuser = () => {
             const data = await response.json();
 
             if (response.ok) {
-                setMessage("Profile updated successfully! Redirecting...");
+                showToast("Profile updated successfully! Redirecting...", "success");
                 setIsError(false);
                 // Redirect to dashboard or home page after a delay
                 setTimeout(() => {
                     window.location.href = "/links"; // Update with your dashboard route
                 }, 2000);
             } else {
-                setMessage(data.message || "Failed to update profile");
+                showToast(data.message || "Failed to update profile", "error");
                 setIsError(true);
             }
         } catch (error) {
-            setMessage("An error occurred. Please try again.");
+            showToast("An error occurred. Please try again.", "error");
             setIsError(true);
             console.error("Error:", error);
         }
@@ -64,6 +83,7 @@ const Aboutuser = () => {
 
     return (
         <div style={{ display: "flex", height: "100vh", width: "100vw", backgroundColor: "#000" }}>
+            <ToastContainer position="top-center" autoClose={3000} />
             {/* Left Section */}
             <div style={{ width: "70%", backgroundColor: "#fff", padding: "5vw" }}>
                 {/* Logo */}
@@ -155,6 +175,28 @@ const Aboutuser = () => {
             </div>
         </div>
     );
+};
+
+
+// Custom Toast Styles
+const successToastStyle = {
+    display: "flex",
+    alignItems: "center",
+    backgroundColor: "#28A745",
+    color: "white",
+    padding: "10px 15px",
+    borderRadius: "5px",
+    fontWeight: "bold",
+};
+
+const errorToastStyle = {
+    display: "flex",
+    alignItems: "center",
+    backgroundColor: "#DC3545",
+    color: "white",
+    padding: "10px 15px",
+    borderRadius: "5px",
+    fontWeight: "bold",
 };
 
 export default Aboutuser;

@@ -4,6 +4,9 @@ import Mobile from "../Components/Mobile";
 import { useProfile } from "../Context/ProfileContext";
 import { UserContext } from "../Context/UserContext";
 import { useAppearance } from "../Context/AppearanceContext";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { FaCheckCircle, FaExclamationTriangle } from "react-icons/fa"; // Import icons
 
 const Appearance = () => {
     const { profile, setProfile } = useProfile(); // Use profile context
@@ -44,6 +47,18 @@ const Appearance = () => {
         fetchProfileData();
     }, [setProfile]);
 
+    //toast message
+    const showToast = (message, type) => {
+        toast(
+            <div style={type === "success" ? successToastStyle : errorToastStyle}>
+                {type === "success" ? <FaCheckCircle style={{ marginRight: "10px" }} /> : <FaExclamationTriangle style={{ marginRight: "10px" }} />}
+                {message}
+            </div>,
+            { className: "custom-toast", closeButton: false, autoClose: 3000 }
+        );
+    };
+
+
     // Fetch appearance data on component mount
     useEffect(() => {
         const fetchAppearanceData = async () => {
@@ -83,16 +98,16 @@ const Appearance = () => {
 
             const data = await response.json();
             if (response.ok) {
-                alert("Appearance saved successfully!");
+                showToast("Appearance saved successfully!", "success");
                 setTimeout(() => {
                     window.location.href = "/analytics"; // Update with your dashboard route
                 }, 2000);
             } else {
-                alert(data.message || "Failed to save appearance");
+                showToast(data.message || "Failed to save appearance", "error");
             }
         } catch (error) {
             console.error("Error saving appearance:", error);
-            alert("An error occurred. Please try again.");
+            showToast("An error occurred. Please try again.", "error");
         }
     };
 
@@ -110,13 +125,13 @@ const Appearance = () => {
 
             const data = await response.json();
             if (response.ok) {
-                alert("Appearance saved successfully!");
+                showToast("Appearance saved successfully!", "success");
             } else {
                 throw new Error(data.message || "Failed to save appearance data");
             }
         } catch (error) {
             console.error("Error saving appearance data:", error);
-            alert("An error occurred. Please try again.");
+            showToast("An error occurred. Please try again.", "error");
         }
     };
 
@@ -176,6 +191,7 @@ const Appearance = () => {
 
     return (
         <div style={{ display: "flex", height: "100%", backgroundColor: "#f3f3f1", width: "100vw" }}>
+            <ToastContainer position="top-center" autoClose={3000} />
             <Sidebar></Sidebar>
             {/* Main Content */}
             <div style={{ flex: 1, padding: "2vw", }}>
@@ -781,5 +797,26 @@ const Appearance = () => {
         </div >
     )
 }
+
+// Custom Toast Styles
+const successToastStyle = {
+    display: "flex",
+    alignItems: "center",
+    backgroundColor: "#28A745",
+    color: "white",
+    padding: "10px 15px",
+    borderRadius: "5px",
+    fontWeight: "bold",
+};
+
+const errorToastStyle = {
+    display: "flex",
+    alignItems: "center",
+    backgroundColor: "#DC3545",
+    color: "white",
+    padding: "10px 15px",
+    borderRadius: "5px",
+    fontWeight: "bold",
+};
 
 export default Appearance

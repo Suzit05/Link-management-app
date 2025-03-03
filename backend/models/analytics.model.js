@@ -1,11 +1,13 @@
 const mongoose = require("mongoose");
 
 const analyticsSchema = new mongoose.Schema({
-    userId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" },
-    type: { type: String, enum: ["link", "shop", "cta"], required: true },
-    itemId: { type: String, required: true }, // Unique ID of link/shop/cta
-    count: { type: Number, default: 0 }
-}, { timestamps: true });
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    linkId: { type: String, required: true },
+    itemType: { type: String, required: true },
+    itemTitle: { type: String, required: true },
+    userAgent: { type: String, required: true },
+    ipAddress: { type: String, required: true },
+    timestamp: { type: Date, default: Date.now },
+});
 
-const Analytics = mongoose.model("Analytics", analyticsSchema);
-module.exports = Analytics;
+module.exports = mongoose.model("Analytics", analyticsSchema);

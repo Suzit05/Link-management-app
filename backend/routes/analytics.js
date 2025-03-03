@@ -1,38 +1,47 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const Analytics = require("../models/analytics.model");
+const Analytics = require('../models/analytics.model');
 
-// Track a click
+
+// Track Click API
 router.post("/track-click", async (req, res) => {
     try {
-        const { userId, type, itemId } = req.body;
+        const { userId, linkId, itemType, itemTitle, userAgent } = req.body;
+        const ipAddress = req.headers["x-forwarded-for"] || req.socket.remoteAddress; // Get IP address
 
-        let analytics = await Analytics.findOne({ userId, type, itemId });
-
-        if (!analytics) {
-            analytics = new Analytics({ userId, type, itemId, count: 1 });
-        } else {
-            analytics.count += 1;
+        if (!userId || !linkId || !itemType || !itemTitle || !userAgent || !ipAddress) {
+            console.error("Missing required fields:", { userId, linkId, itemType, itemTitle, userAgent, ipAddress });
+            return res.status(400).json({ message: "Missing required fields" });
         }
 
-        await analytics.save();
-        res.status(200).json({ success: true, message: "Click tracked successfully" });
+        console.log("Tracking click:", { userId, linkId, itemType, itemTitle, userAgent, ipAddress });
+
+        await Analytics.create({
+            userId,
+            linkId,
+            itemType,
+            itemTitle,
+            userAgent,
+            ipAddress,
+        });
+
+        res.status(200).json({ message: "Click tracked successfully" });
     } catch (error) {
         console.error("Error tracking click:", error);
-        res.status(500).json({ success: false, message: "Server error", error: error.message });
+        res.status(500).json({ message: "Internal Server Error", error: error.message });
     }
 });
 
-// Get analytics data for a user
-router.get("/get-analytics/:userId", async (req, res) => {
-    try {
-        const { userId } = req.params;
-        const analyticsData = await Analytics.find({ userId });
+// Retrieve analytics data
+router.get('/get-analytics/:userId', async (req, res) => {
+    const { userId } = req.params;
 
+    try {
+        const analyticsData = await Analytics.find({ userId });
         res.status(200).json({ success: true, analytics: analyticsData });
     } catch (error) {
-        console.error("Error fetching analytics:", error);
-        res.status(500).json({ success: false, error: error.message });
+        console.error('Error fetching analytics:', error);
+        res.status(500).json({ success: false, message: 'Server error' });
     }
 });
 

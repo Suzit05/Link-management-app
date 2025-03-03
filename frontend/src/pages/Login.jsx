@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import sparklogo from "../assets/images/sparklogo.png";
 import woman from "../assets/images/woman.png";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { FaCheckCircle, FaExclamationTriangle } from "react-icons/fa"; // Import icons
 
 const Login = () => {
   // State for form inputs
@@ -22,6 +25,17 @@ const Login = () => {
     });
   };
 
+
+  const showToast = (message, type) => {
+    toast(
+      <div style={type === "success" ? successToastStyle : errorToastStyle}>
+        {type === "success" ? <FaCheckCircle style={{ marginRight: "10px" }} /> : <FaExclamationTriangle style={{ marginRight: "10px" }} />}
+        {message}
+      </div>,
+      { className: "custom-toast", closeButton: false, autoClose: 3000 }
+    );
+  };
+
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,7 +55,7 @@ const Login = () => {
       if (response.ok) {
         // Save the JWT token in localStorage
         localStorage.setItem('token', data.token);
-        setMessage("Login successful! Redirecting...");
+        showToast("Login successful!", "success");
         setIsError(false);
 
         // Redirect to dashboard or home page after a delay
@@ -49,11 +63,11 @@ const Login = () => {
           window.location.href = "/aboutuser"; // Update with your dashboard route
         }, 2000);
       } else {
-        setMessage(data.message || "Login failed");
+        showToast(data.message || "Login failed", "error");
         setIsError(true);
       }
     } catch (error) {
-      setMessage("An error occurred. Please try again.");
+      showToast("An error occurred. Please try again.", "error");
       setIsError(true);
       console.error("Error:", error);
     }
@@ -71,6 +85,7 @@ const Login = () => {
       height: "100vh",
       backgroundColor: "#F5F5F5"
     }}>
+      <ToastContainer position="top-center" autoClose={3000} />
       {/* Left Side - Form Section */}
       <div style={{
         width: "60%",
@@ -146,6 +161,27 @@ const Login = () => {
       </div>
     </div>
   );
+};
+
+// Custom Toast Styles
+const successToastStyle = {
+  display: "flex",
+  alignItems: "center",
+  backgroundColor: "#28A745",
+  color: "white",
+  padding: "10px 15px",
+  borderRadius: "5px",
+  fontWeight: "bold",
+};
+
+const errorToastStyle = {
+  display: "flex",
+  alignItems: "center",
+  backgroundColor: "#DC3545",
+  color: "white",
+  padding: "10px 15px",
+  borderRadius: "5px",
+  fontWeight: "bold",
 };
 
 // Input Style

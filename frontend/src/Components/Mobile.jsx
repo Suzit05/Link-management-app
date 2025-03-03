@@ -1,16 +1,20 @@
 import React from 'react';
-import sparklogo from "../assets/images/sparklogo.png";
+
 import { useProfile } from "../Context/ProfileContext";
 import { useAppearance } from '../Context/AppearanceContext';
 import { useAnalytics } from '../Context/AnalyticsContext';
 
 
 
+
 const Mobile = () => {
     const { profile } = useProfile();
-    const userId = profile?.userId; // ✅ Extract userId from profile
+    const userId = profile?._id || profile?.userId; // Adjust this based on how user data is stored
+    // const userId = localStorage.getItem("userId");
+
+
     const { profileImage, bannerColor, profileTitle, links = [], Shop = [] } = profile;
-    const { clickCounts, trackClick } = useAnalytics(); // Use analytics
+    const { linkCount, shopCount, setlinkCount, setShopCount, totalCount, ctaCount, setctaCount } = useAnalytics(); // Use analytics
     const { appearance, buttonColor, buttonFontColor, themeBackgroundColor } = useAppearance();
     const { layout } = appearance;
 
@@ -18,6 +22,25 @@ const Mobile = () => {
     console.log("Current theme background color:", themeBackgroundColor);
 
     const layoutType = layout.type;
+
+
+    const linkCounter = () => {
+        setlinkCount(prevCount => prevCount + 1); // Use functional update
+        console.log(linkCount);
+        console.log(`totalcount:${totalCount}`)
+    };
+
+    const shopCounter = () => {
+        setShopCount(prevCount => prevCount + 1); // Use functional update
+        console.log(shopCount);
+    };
+
+    const ctaCounter = () => {
+        setctaCount(prevCount => prevCount + 1);
+
+    }
+
+
 
     // Apply layout styles dynamically
     const layoutStyle = {
@@ -121,8 +144,10 @@ const Mobile = () => {
                 }}>
                     <div style={layoutStyle}>
                         {links.map((link, index) => (
-                            <button key={index} style={buttonStyle}
-                                onClick={() => trackClick(userId, "link", link.id || `link-${index}`)}
+                            <button
+                                key={index}
+                                style={buttonStyle}
+                                onClick={linkCounter}
                             >
                                 📺 {link.title}
                             </button>
@@ -130,8 +155,10 @@ const Mobile = () => {
                     </div>
                     <div style={layoutStyle}>
                         {Shop.map((shop, index) => (
-                            <button key={index} style={buttonStyle}
-                                onClick={() => trackClick(userId, "shop", shop.id || `shop-${index}`)}
+                            <button
+                                key={index}
+                                style={buttonStyle}
+                                onClick={shopCounter}
                             >
                                 🛍️ {shop.title}
                             </button>
@@ -147,8 +174,9 @@ const Mobile = () => {
                     backgroundColor: "#1DA35E",
                     color: "#fff",
                     border: "none",
-                    borderRadius: "1vw"
-                }} onClick={() => trackClick(userId, "cta", "cta-button")}>
+                    borderRadius: "1vw",
+                    cursor: "pointer"
+                }} onClick={ctaCounter} >
                     Get Connected
                 </button>
             </div>
