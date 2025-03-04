@@ -1,6 +1,4 @@
-Here’s a professional and well-structured `README.md` for your project. It includes **Setup Instructions**, **Features Implemented**, and **Demo Credentials**. You can copy and paste this into your repository.
 
----
 
 # Link Management Platform
 {https://link-management-app.vercel.app/}
