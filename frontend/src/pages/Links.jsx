@@ -266,14 +266,15 @@ const Links = () => {
                         {/* Banner Customization */}
                         <div style={{ backgroundColor: "white", padding: "2vw", borderRadius: "1vw" }}>
                             <h3 style={{ fontSize: "1.5vw", marginBottom: "1vw" }}>Banner</h3>
-                            <div style={{ backgroundColor: profile.bannerColor || "#000000", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "20vh", padding: "2vw", borderRadius: "1vw", textAlign: "center", color: "#fff" }}>
+                            <div style={{ backgroundColor: profile.bannerColor || "#000000", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "2vw", borderRadius: "1vw", textAlign: "center", color: "#fff" }}>
                                 <div
                                     className="dp"
                                     style={{
+                                        marginRight: "3vw",
                                         borderRadius: "50%",
-                                        backgroundColor: "white",
-                                        height: "12vh",
-                                        width: "5vw",
+                                        backgroundColor: "red",
+                                        height: "6vw",
+                                        width: "6vw",
                                         backgroundImage: profile.profileImage ? `url(${profile.profileImage})` : "none",
                                         backgroundSize: "cover",
                                         backgroundPosition: "center",

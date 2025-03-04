@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import sparklogo from "../assets/images/sparklogo.png";
 import woman from "../assets/images/woman.png";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { FaCheckCircle, FaExclamationTriangle } from "react-icons/fa";
+import "../styles/register.css";
 
 const Register = () => {
-
-
-
-
-    // State for form inputs
     const [formData, setFormData] = useState({
         firstName: "",
         lastName: "",
@@ -16,11 +15,9 @@ const Register = () => {
         confirmPassword: "",
     });
 
-    // State for feedback messages
     const [message, setMessage] = useState("");
     const [isError, setIsError] = useState(false);
 
-    // Handle input changes
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -29,18 +26,25 @@ const Register = () => {
         });
     };
 
-    // Handle form submission
+    const showToast = (message, type) => {
+        toast(
+            <div className={type === "success" ? "success-toast" : "error-toast"}>
+                {type === "success" ? <FaCheckCircle style={{ marginRight: "10px" }} /> : <FaExclamationTriangle style={{ marginRight: "10px" }} />}
+                {message}
+            </div>,
+            { className: "custom-toast", closeButton: false, autoClose: 3000 }
+        );
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Check if passwords match
         if (formData.password !== formData.confirmPassword) {
             setMessage("Passwords do not match");
             setIsError(true);
             return;
         }
 
-        // Prepare data for the backend
         const userData = {
             firstName: formData.firstName,
             lastName: formData.lastName,
@@ -49,7 +53,6 @@ const Register = () => {
         };
 
         try {
-            // Send POST request to the backend
             const response = await fetch('http://localhost:3000/api/user/register', {
                 method: 'POST',
                 headers: {
@@ -61,14 +64,13 @@ const Register = () => {
             const data = await response.json();
 
             if (response.ok) {
-                setMessage("Registration successful! Redirecting...");
+                showToast("Registration successful! Redirecting...", "success");
                 setIsError(false);
-                // Redirect to login page or dashboard after a delay
                 setTimeout(() => {
-                    window.location.href = "/login"; // Update with your login route
+                    window.location.href = "/login";
                 }, 2000);
             } else {
-                setMessage(data.message || "Registration failed");
+                showToast(data.message || "Registration failed", "error");
                 setIsError(true);
             }
         } catch (error) {
@@ -78,7 +80,6 @@ const Register = () => {
         }
     };
 
-    // Check if the form is valid (all fields filled and passwords match)
     const isFormValid = () => {
         return (
             formData.firstName &&
@@ -91,53 +92,41 @@ const Register = () => {
     };
 
     return (
-        <div style={{
-            display: "flex",
-            width: "100vw",
-            height: "100vh",
-            backgroundColor: "#F5F5F5"
-        }}>
+        <div className="register-container">
+            <ToastContainer position="top-center" autoClose={3000} />
             {/* Left Side - Form Section */}
-            <div style={{
-                width: "60%",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "white",
-                padding: "20vw"
-            }}>
+            <div className="form-section">
                 {/* Logo */}
-                <div style={{ width: "fit-content", marginLeft: "-60vw" }}>
-                    <img src={sparklogo} alt="" />
+                <div className="logo-container">
+                    <img src={sparklogo} alt="Spark Logo" />
                 </div>
 
                 {/* Heading */}
-                <h1 style={{ fontSize: "2.5vw", fontWeight: "bold", marginBottom: "1vw", letterSpacing: "-3px" }}>Sign up to your Spark</h1>
+                <h1 className="heading">Sign up to your Spark</h1>
                 {/* Subheading */}
-                <p style={{ fontSize: "1.5vw", marginBottom: "2vw" }}>
+                <p className="subheading">
                     Create an account
-                    <span onClick={() => { window.location.href = "/login" }} style={{ marginLeft: "15vw", fontSize: "2vh", color: "#28A263", cursor: "pointer", borderBottom: "2px solid #28A263" }}>
+                    <span className="sign-in-link" onClick={() => { window.location.href = "/login" }}>
                         Sign in instead
                     </span>
                 </p>
 
                 {/* Feedback Message */}
                 {message && (
-                    <p style={{ color: isError ? "red" : "green", fontSize: "1vw", marginBottom: "1vw" }}>
+                    <p className={`feedback-message ${isError ? "error" : "success"}`}>
                         {message}
                     </p>
                 )}
 
                 {/* Form */}
-                <form onSubmit={handleSubmit} style={{ width: "100%", display: "flex", flexDirection: "column", gap: "1vw" }}>
+                <form onSubmit={handleSubmit} className="register-form">
                     <input
                         type="text"
                         name="firstName"
                         placeholder="First name"
                         value={formData.firstName}
                         onChange={handleInputChange}
-                        style={inputStyle}
+                        className="input-field"
                         required
                     />
                     <input
@@ -146,7 +135,7 @@ const Register = () => {
                         placeholder="Last name"
                         value={formData.lastName}
                         onChange={handleInputChange}
-                        style={inputStyle}
+                        className="input-field"
                         required
                     />
                     <input
@@ -155,7 +144,7 @@ const Register = () => {
                         placeholder="Email"
                         value={formData.email}
                         onChange={handleInputChange}
-                        style={inputStyle}
+                        className="input-field"
                         required
                     />
                     <input
@@ -164,7 +153,7 @@ const Register = () => {
                         placeholder="Password"
                         value={formData.password}
                         onChange={handleInputChange}
-                        style={inputStyle}
+                        className="input-field"
                         required
                     />
                     <input
@@ -173,60 +162,34 @@ const Register = () => {
                         placeholder="Confirm Password"
                         value={formData.confirmPassword}
                         onChange={handleInputChange}
-                        style={inputStyle}
+                        className="input-field"
                         required
                     />
 
                     {/* Terms Checkbox */}
-                    <label style={{ fontSize: "1vw", display: "flex", alignItems: "center", gap: "0.5vw" }}>
+                    <label className="terms-label">
                         <input type="checkbox" required />
-                        By creating an account, I agree to the <span style={{ color: "blue", cursor: "pointer" }}>Terms of Use</span> and <span style={{ color: "blue", cursor: "pointer" }}>Privacy Policy</span>
+                        By creating an account, I agree to the <span className="terms-link">Terms of Use</span> and <span className="terms-link">Privacy Policy</span>
                     </label>
 
                     {/* Submit Button */}
-                    <button
-                        type="submit"
-                        style={{ backgroundColor: "#28A263", padding: "1vw 3vw" }}
-
-                    >
+                    <button type="submit" className="submit-button">
                         Create an account
                     </button>
                 </form>
 
                 {/* Footer */}
-                <p style={{ fontSize: "0.8vw", marginTop: "2vw", color: "#777" }}>
-                    This site is protected by reCAPTCHA and the <span style={{ color: "blue", cursor: "pointer" }}>Google Privacy Policy</span> and <span style={{ color: "blue", cursor: "pointer" }}>Terms of Service</span> apply.
+                <p className="footer-text">
+                    This site is protected by reCAPTCHA and the <span className="footer-link">Google Privacy Policy</span> and <span className="footer-link">Terms of Service</span> apply.
                 </p>
             </div>
 
             {/* Right Side - Image Section */}
-            <div style={{
-                width: "40%",
-                height: "100%"
-            }}>
-                <img style={{ width: "100%", height: "100%" }} src={woman} alt="" />
+            <div className="image-section">
+                <img src={woman} alt="Woman" />
             </div>
         </div>
     );
-};
-
-// Input Style
-const inputStyle = {
-    width: "100%",
-    padding: "1vw",
-    fontSize: "1vw",
-    border: "1px solid #ccc",
-    borderRadius: "5px"
-};
-
-// Button Style
-const buttonStyle = {
-    width: "100%",
-    padding: "1vw",
-    fontSize: "1.2vw",
-    color: "white",
-    border: "none",
-    borderRadius: "5px",
 };
 
 export default Register;

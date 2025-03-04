@@ -1,0 +1,63 @@
+/* sidebar.css */
+
+/* General Styles */
+.sidebar-container {
+    width: 18%;
+    background-color: #fff;
+    padding: 2vw;
+    border-right: 1px solid #ddd;
+}
+
+/* Logo Section */
+.logo-section {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2vw;
+}
+
+.logo {
+    width: 6vw;
+    margin-right: 1vw;
+}
+
+/* Sidebar Items */
+.sidebar-list {
+
+    list-style: none;
+    padding: 0;
+    font-size: 1.2vw;
+}
+
+.sidebar-item {
+    padding: 1vw 0;
+    cursor: pointer;
+    color: grey;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    gap: 0.7vw;
+}
+
+.sidebar-item.active {
+    color: #1DA35E;
+    background-color: #F3F3F1;
+}
+
+.sidebar-item i {
+    font-size: 1.2vw;
+}
+
+/* User Profile Section */
+.user-profile {
+    position: absolute;
+    bottom: 2vw;
+    display: flex;
+    align-items: center;
+    border: 2px solid black;
+    border-radius: 3vw;
+    padding: 1vw;
+}
+
+.user-name {
+    font-size: 1vw;
+}

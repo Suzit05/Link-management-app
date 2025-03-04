@@ -1,0 +1,119 @@
+/* specialbtns.css */
+
+/* General Styles */
+.specialbtns-container {
+    background-color: #fff;
+
+    padding: 1.5vw;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.specialbtns-title {
+    margin-bottom: 1vw;
+    font-size: 1.2vw;
+    color: #333;
+}
+
+/* Button Styles Section */
+.button-styles-section {
+    margin-bottom: 1.5vw;
+}
+
+.button-styles-title {
+    margin-bottom: 0.5vw;
+    font-size: 1vw;
+    color: #333;
+}
+
+.button-styles-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1vw;
+}
+
+.button-style {
+    width: 100%;
+    height: 2vw;
+    border: 2px solid #000;
+    cursor: pointer;
+}
+
+.button-style.fill {
+    background-color: black;
+}
+
+.button-style.outline {
+    background-color: transparent;
+}
+
+.button-style.hardshadow {
+    box-shadow: 4px 4px 0px rgba(0, 0, 0, 1);
+}
+
+.button-style.softshadow {
+    box-shadow: 4px 4px 0px rgb(241, 239, 239);
+}
+
+.button-style.torn {
+    clip-path: polygon(0% 10%, 5% 15%, 10% 10%, 15% 15%, 20% 10%, 25% 15%, 30% 10%, 35% 15%, 40% 10%, 45% 15%, 50% 10%, 55% 15%, 60% 10%, 65% 15%, 70% 10%, 75% 15%, 80% 10%, 85% 15%, 90% 10%, 95% 15%, 100% 10%, 100% 90%, 95% 85%, 90% 90%, 85% 85%, 80% 90%, 75% 85%, 70% 90%, 65% 85%, 60% 90%, 55% 85%, 50% 90%, 45% 85%, 40% 90%, 35% 85%, 30% 90%, 25% 85%, 20% 90%, 15% 85%, 10% 90%, 5% 85%, 0% 90%);
+}
+
+.button-style.wave {
+    clip-path: polygon(0% 85%, 6.25% 75%, 12.5% 85%, 18.75% 75%, 25% 85%, 31.25% 75%, 37.5% 85%, 43.75% 75%, 50% 85%, 56.25% 75%, 62.5% 85%, 68.75% 75%, 75% 85%, 81.25% 75%, 87.5% 85%, 93.75% 75%, 100% 85%, 100% 15%, 93.75% 25%, 87.5% 15%, 81.25% 25%, 75% 15%, 68.75% 25%, 62.5% 15%, 56.25% 25%, 50% 15%, 43.75% 25%, 37.5% 15%, 31.25% 25%, 25% 15%, 18.75% 25%, 12.5% 15%, 6.25% 25%, 0% 15%);
+}
+
+.button-style.doubleborder {
+    background-color: white;
+    position: relative;
+}
+
+.button-style.doubleborder-inner {
+    width: 90%;
+    height: 2.6vw;
+    position: absolute;
+    bottom: -0.4vw;
+    left: 0.6vw;
+    border: 2px solid black;
+}
+
+.button-style.rounded {
+    border-radius: 50px;
+}
+
+.button-style.rectangle {
+    position: relative;
+}
+
+.button-style.rectangle-corner {
+    width: 0.5vw;
+    height: 0.5vw;
+    background-color: white;
+    border: 2px solid black;
+    position: absolute;
+}
+
+.button-style.halfrounded {
+    border-radius: 50px 0px 0px 50px;
+}
+
+/* Button Color & Font Color Section */
+.color-input-section {
+    display: flex;
+    gap: 1vw;
+    margin-top: 1vw;
+}
+
+.color-preview {
+    padding: 1vw;
+    border-radius: 5px;
+    width: 6%;
+    height: 2vw;
+}
+
+.color-input {
+    background-color: #ddd;
+    padding: 1vw;
+    border-radius: 5px;
+    width: 30%;
+}

@@ -1,0 +1,134 @@
+/* aboutuser.css */
+
+/* General Styles */
+.aboutuser-container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    background-color: #000;
+}
+
+/* Left Section */
+.left-section {
+    width: 70%;
+    background-color: #fff;
+    padding: 5vw;
+}
+
+.logo {
+    width: 5vw;
+}
+
+.heading {
+    font-size: 2.5vw;
+    font-weight: bold;
+    margin-bottom: 1vw;
+}
+
+.subheading {
+    font-size: 1vw;
+    color: gray;
+    margin-bottom: 2vw;
+}
+
+.feedback-message {
+    font-size: 1vw;
+    margin-bottom: 2vw;
+}
+
+.feedback-message.error {
+    color: red;
+}
+
+.feedback-message.success {
+    color: green;
+}
+
+/* Username Input */
+.username-input {
+    width: 100%;
+    padding: 1vw;
+    font-size: 1vw;
+    border-radius: 0.5vw;
+    border: 1px solid #ddd;
+    margin-bottom: 2vw;
+    background-color: #F5F5F5;
+    outline: none;
+}
+
+/* Category Selection */
+.category-heading {
+    font-size: 1vw;
+    font-weight: 500;
+    margin-bottom: 1vw;
+}
+
+.category-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7vw;
+}
+
+.category-button {
+    padding: 0.7vw 1.5vw;
+    font-size: 1vw;
+    border-radius: 2vw;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    color: #000;
+    cursor: pointer;
+}
+
+.category-button.selected {
+    background-color: #1DA35E;
+    color: #fff;
+}
+
+/* Continue Button */
+.continue-button {
+    width: 100%;
+    padding: 1vw;
+    font-size: 1vw;
+    border-radius: 5vw;
+    border: none;
+    background-color: #BDBDBD;
+    color: white;
+    font-weight: bold;
+    cursor: not-allowed;
+    margin-top: 2vw;
+}
+
+.continue-button.enabled {
+    background-color: #1DA35E;
+    cursor: pointer;
+}
+
+/* Right Section */
+.right-section {
+    background-color: #F9C74F;
+    width: 30%;
+}
+
+.right-section img {
+    width: 100%;
+    height: 100%;
+}
+
+/* Toast Styles */
+.custom-toast {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.success-toast {
+    background-color: #28A745;
+    color: white;
+}
+
+.error-toast {
+    background-color: #DC3545;
+    color: white;
+}

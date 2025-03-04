@@ -1,18 +1,12 @@
 import React from 'react';
-
 import { useProfile } from "../Context/ProfileContext";
 import { useAppearance } from '../Context/AppearanceContext';
 import { useAnalytics } from '../Context/AnalyticsContext';
-
-
-
+import "../styles/mobile.css";
 
 const Mobile = () => {
     const { profile } = useProfile();
     const userId = profile?._id || profile?.userId; // Adjust this based on how user data is stored
-    // const userId = localStorage.getItem("userId");
-
-
     const { profileImage, bannerColor, profileTitle, links = [], Shop = [] } = profile;
     const { linkCount, shopCount, setlinkCount, setShopCount, totalCount, ctaCount, setctaCount } = useAnalytics(); // Use analytics
     const { appearance, buttonColor, buttonFontColor, themeBackgroundColor } = useAppearance();
@@ -23,11 +17,10 @@ const Mobile = () => {
 
     const layoutType = layout.type;
 
-
     const linkCounter = () => {
         setlinkCount(prevCount => prevCount + 1); // Use functional update
         console.log(linkCount);
-        console.log(`totalcount:${totalCount}`)
+        console.log(`totalcount:${totalCount}`);
     };
 
     const shopCounter = () => {
@@ -37,10 +30,7 @@ const Mobile = () => {
 
     const ctaCounter = () => {
         setctaCount(prevCount => prevCount + 1);
-
-    }
-
-
+    };
 
     // Apply layout styles dynamically
     const layoutStyle = {
@@ -68,96 +58,41 @@ const Mobile = () => {
         cursor: "pointer"
     };
 
-
-
     return (
-        <div style={{
-            flex: "0.3", borderRadius: "1vw", textAlign: "center",
-
-        }}>
-            <div style={{
-                width: "16vw",
-                height: "38vw",
-                border: "1vw solid black",
-                borderRadius: "5vw",
-                padding: 0,
-                backgroundColor: themeBackgroundColor  // ✅ Background updates correctly now// ✅ Dynamic background from selected theme
-            }}>
-                <div className="mobile-banner" style={{
-                    width: "100%",
-                    height: "12vw",
-                    display: "flex",
-                    flexDirection: "column",
-                    backgroundColor: bannerColor || "#342B26",
-                    margin: 0,
-                    padding: 0,
-                    borderRadius: "3.9vw",
-                }}>
-                    <div className="dp" style={{
-                        alignItems: "center",
-                        justifyContent: "center",
-                        marginTop: "4vw",
-                        marginLeft: "5vw",
-                        borderRadius: "50%",
-                        height: '12vh',
-                        width: "5vw",
-                        backgroundImage: profileImage ? `url(${profileImage})` : "none",
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                    }}></div>
-                    <h3 style={{ fontSize: "1vw", color: "white" }}>{profileTitle || "profile"}</h3>
+        <div className="mobile-container">
+            <div className="mobile-inner" style={{ backgroundColor: themeBackgroundColor }}>
+                {/* Mobile Banner */}
+                <div className="mobile-banner" style={{ backgroundColor: bannerColor || "#342B26" }}>
+                    <div className="dp" style={{ backgroundImage: profileImage ? `url(${profileImage})` : "none" }}></div>
+                    <h3 className="profile-title">{profileTitle || "profile"}</h3>
                 </div>
 
-                <div style={{
-                    width: "fit-content",
-                    marginLeft: "3.5vw",
-                    marginTop: "1vw",
-                    display: "flex",
-                    gap: "0",
-                    backgroundColor: "#ddd",
-                    borderRadius: "1vw"
-                }}>
-                    <button style={{
-                        backgroundColor: "#1DA35E",
-                        border: "none",
-                        borderRadius: "2vw",
-                        padding: "0.6vw 1.2vw",
-                    }}>
-                        Link
-                    </button>
-                    <button style={{
-                        backgroundColor: "#ddd",
-                        border: "none",
-                        borderRadius: "2vw",
-                        padding: "0.6vw 1.2vw",
-                    }}>
-                        Shop
-                    </button>
+                {/* Link and Shop Buttons */}
+                <div className="tab-buttons">
+                    <button className="tab-button active">Link</button>
+                    <button className="tab-button inactive">Shop</button>
                 </div>
 
-                <div style={{
-                    maxHeight: "15vw", overflowX: "auto", overflowY: "auto", paddingRight: "0.5vw", padding: "1vw", scrollbarWidth: "none", // Hides scrollbar in Firefox
-                    msOverflowStyle: "none", // Hides scrollbar in IE/Edge
-                    "&::-webkit-scrollbar": { // Hides scrollbar in WebKit browsers (Chrome, Safari, etc.)
-                        display: "none",
-                    },
-                }}>
-                    <div style={layoutStyle}>
+                {/* Links and Shop Items */}
+                <div className="links-container">
+                    <div className={`layout-style ${layoutType}`}>
                         {links.map((link, index) => (
                             <button
                                 key={index}
-                                style={buttonStyle}
+                                className={`link-button ${layoutType}`}
+                                style={{ backgroundColor: buttonColor, color: buttonFontColor }}
                                 onClick={linkCounter}
                             >
                                 📺 {link.title}
                             </button>
                         ))}
                     </div>
-                    <div style={layoutStyle}>
+                    <div className={`layout-style ${layoutType}`}>
                         {Shop.map((shop, index) => (
                             <button
                                 key={index}
-                                style={buttonStyle}
+                                className={`link-button ${layoutType}`}
+                                style={{ backgroundColor: buttonColor, color: buttonFontColor }}
                                 onClick={shopCounter}
                             >
                                 🛍️ {shop.title}
@@ -166,21 +101,12 @@ const Mobile = () => {
                     </div>
                 </div>
 
-
-                <button style={{
-                    marginTop: "2vw",
-                    padding: "0.5vw",
-                    width: "80%",
-                    backgroundColor: "#1DA35E",
-                    color: "#fff",
-                    border: "none",
-                    borderRadius: "1vw",
-                    cursor: "pointer"
-                }} onClick={ctaCounter} >
+                {/* CTA Button */}
+                <button className="cta-button" onClick={ctaCounter}>
                     Get Connected
                 </button>
             </div>
-        </div >
+        </div>
     );
 };
 

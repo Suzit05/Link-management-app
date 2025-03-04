@@ -1,0 +1,244 @@
+/* links.css */
+
+/* General Styles */
+.links-container {
+    display: flex;
+    height: 100%;
+    background-color: #f3f3f1;
+    /* background-color: red; */
+    width: 100vw;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    padding: 2vw;
+}
+
+/* Header */
+.header {
+    font-size: 1.8vw;
+    margin-bottom: 0.5vw;
+}
+
+.subheader {
+    color: gray;
+    margin-bottom: 2vw;
+}
+
+/* Mobile Preview and Customization Section */
+.customization-section {
+    display: flex;
+    gap: 10vw;
+}
+
+/* Profile Customization */
+.profile-customization {
+    flex: 0.7;
+    display: flex;
+    flex-direction: column;
+    gap: 2vw;
+}
+
+/* Profile Section */
+.profile-section {
+    background-color: #fff;
+    padding: 2vw;
+    border-radius: 1vw;
+}
+
+.profile-image-container {
+    display: flex;
+    align-items: center;
+    gap: 2vw;
+    margin-bottom: 1vw;
+}
+
+.profile-image {
+    border-radius: 50%;
+    background-color: white;
+    height: 12vh;
+    width: 5vw;
+    background-size: cover;
+    background-position: center;
+}
+
+.profile-upload-button {
+    width: 90%;
+    background-color: #1DA35E;
+    color: #fff;
+    padding: 1vw;
+    border: none;
+    border-radius: 1vw;
+    cursor: pointer;
+    text-align: center;
+}
+
+.profile-remove-button {
+    width: 90%;
+    padding: 1vw;
+    border: 1px solid #ddd;
+    border-radius: 1vw;
+    cursor: pointer;
+}
+
+.profile-input {
+    width: 100%;
+    padding: 1vw;
+    margin-bottom: 1vw;
+    border: 1px solid #ddd;
+    border-radius: 0.5vw;
+}
+
+.profile-textarea {
+    width: 100%;
+    padding: 1vw;
+    border: 1px solid #ddd;
+    border-radius: 0.5vw;
+}
+
+/* Link and Shop Box */
+.link-shop-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    padding: 1vw;
+    border-radius: 1vw;
+}
+
+.toggle-buttons {
+    width: fit-content;
+    align-self: self-start;
+    display: flex;
+    gap: 0;
+    background-color: #ddd;
+}
+
+.toggle-button {
+    border: none;
+    border-radius: 2vw;
+    padding: 0.6vw 1.2vw;
+    cursor: pointer;
+}
+
+.toggle-button.active {
+    background-color: #1DA35E;
+    color: white;
+}
+
+.toggle-button.inactive {
+    background-color: #ddd;
+    color: black;
+}
+
+.add-button {
+    background-color: #1DA35E;
+    color: white;
+    font-size: 1vw;
+    border: none;
+    margin-top: 3vh;
+    border-radius: 2vw;
+    padding: 1vw 18vw;
+    cursor: pointer;
+}
+
+.link-item {
+    background-color: #ddd;
+    padding: 1vw;
+    border-radius: 1vw;
+    margin-bottom: 1vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.link-item strong {
+    font-weight: bold;
+}
+
+.link-item p {
+    margin: 0;
+}
+
+.delete-icon {
+    cursor: pointer;
+    color: red;
+}
+
+/* Banner Customization */
+.banner-section {
+    background-color: white;
+    padding: 2vw;
+    border-radius: 1vw;
+}
+
+.banner-preview {
+    background-color: var(--banner-color, #000000);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2vw;
+    border-radius: 1vw;
+    text-align: center;
+    color: #fff;
+}
+
+.banner-image {
+    border-radius: 50%;
+    background-color: red;
+    height: 6vw;
+    width: 6vw;
+    background-size: cover;
+    background-position: center;
+}
+
+.color-picker {
+    display: flex;
+    gap: 1vw;
+    margin-top: 0.5vw;
+}
+
+.color-option {
+    width: 2vw;
+    height: 2vw;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 1px solid #ddd;
+}
+
+.color-option.active {
+    border: 3px solid #1DA35E;
+}
+
+.color-input-container {
+    display: flex;
+    gap: 1vw;
+    align-items: center;
+    margin-top: 2vh;
+}
+
+.color-preview {
+    width: 2vw;
+    height: 4vh;
+    background-color: var(--custom-color, pink);
+}
+
+.color-input {
+    width: 12vw;
+    height: 4vh;
+}
+
+/* Save Button */
+.save-button {
+    margin-top: 2vw;
+    padding: 0.4vw 2.2vw;
+    width: 6vw;
+    background-color: #1DA35E;
+    color: #fff;
+    border: none;
+    border-radius: 0.5vw;
+    cursor: pointer;
+}

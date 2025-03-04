@@ -41,7 +41,7 @@ const Analytics = () => {
     ];
 
     const linkData = [
-        { name: "Link 1", clicks: 0 },
+        { name: "Link 1", clicks: 2 },
         { name: "Link 2", clicks: linkCount },
         { name: "Link 3", clicks: shopCount },
         { name: "Link 4", clicks: totalCount / 4 },

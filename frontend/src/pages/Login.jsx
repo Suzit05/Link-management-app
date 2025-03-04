@@ -3,20 +3,24 @@ import sparklogo from "../assets/images/sparklogo.png";
 import woman from "../assets/images/woman.png";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { FaCheckCircle, FaExclamationTriangle } from "react-icons/fa"; // Import icons
+import { FaCheckCircle, FaExclamationTriangle } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
+import "../styles/login.css";
 
 const Login = () => {
-  // State for form inputs
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  // State for feedback messages
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
 
-  // Handle input changes
+  const navigate = useNavigate();
+  const handleSignup = () => {
+    navigate('/register');
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -25,10 +29,9 @@ const Login = () => {
     });
   };
 
-
   const showToast = (message, type) => {
     toast(
-      <div style={type === "success" ? successToastStyle : errorToastStyle}>
+      <div className={type === "success" ? "success-toast" : "error-toast"}>
         {type === "success" ? <FaCheckCircle style={{ marginRight: "10px" }} /> : <FaExclamationTriangle style={{ marginRight: "10px" }} />}
         {message}
       </div>,
@@ -36,12 +39,10 @@ const Login = () => {
     );
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      // Send POST request to the backend
       const response = await fetch('http://localhost:3000/api/auth/login', {
         method: 'POST',
         headers: {
@@ -53,14 +54,11 @@ const Login = () => {
       const data = await response.json();
 
       if (response.ok) {
-        // Save the JWT token in localStorage
         localStorage.setItem('token', data.token);
         showToast("Login successful!", "success");
         setIsError(false);
-
-        // Redirect to dashboard or home page after a delay
         setTimeout(() => {
-          window.location.href = "/aboutuser"; // Update with your dashboard route
+          window.location.href = "/aboutuser";
         }, 2000);
       } else {
         showToast(data.message || "Login failed", "error");
@@ -73,53 +71,39 @@ const Login = () => {
     }
   };
 
-  // Check if the form is valid (both fields filled)
   const isFormValid = () => {
     return formData.email.trim() && formData.password.trim();
   };
 
   return (
-    <div style={{
-      display: "flex",
-      width: "100vw",
-      height: "100vh",
-      backgroundColor: "#F5F5F5"
-    }}>
+    <div className="login-container">
       <ToastContainer position="top-center" autoClose={3000} />
       {/* Left Side - Form Section */}
-      <div style={{
-        width: "60%",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "white",
-        padding: "10vw"
-      }}>
+      <div className="form-section">
         {/* Logo */}
-        <div style={{ width: "fit-content", position: "absolute", marginLeft: "-60vw", marginBottom: "44vw" }}>
-          <img src={sparklogo} alt="" />
+        <div className="logo-container">
+          <img src={sparklogo} alt="Spark Logo" />
         </div>
 
         {/* Heading */}
-        <h1 style={{ fontSize: "2.5vw", fontWeight: "bold", marginBottom: "1vw", letterSpacing: "-3px" }}>Sign in to your Spark</h1>
+        <h1 className="heading">Sign in to your Spark</h1>
 
         {/* Feedback Message */}
         {message && (
-          <p style={{ color: isError ? "red" : "green", fontSize: "1vw", marginBottom: "1vw" }}>
+          <p className={`feedback-message ${isError ? "error" : "success"}`}>
             {message}
           </p>
         )}
 
         {/* Form */}
-        <form onSubmit={handleSubmit} style={{ width: "100%", display: "flex", flexDirection: "column", gap: "1vw" }}>
+        <form onSubmit={handleSubmit} className="login-form">
           <input
             type="email"
             name="email"
             placeholder="Email"
             value={formData.email}
             onChange={handleInputChange}
-            style={inputStyle}
+            className="input-field"
             required
           />
           <input
@@ -128,18 +112,14 @@ const Login = () => {
             placeholder="Password"
             value={formData.password}
             onChange={handleInputChange}
-            style={inputStyle}
+            className="input-field"
             required
           />
 
           {/* Submit Button */}
           <button
             type="submit"
-            style={{
-              ...buttonStyle,
-              backgroundColor: isFormValid() ? "#28A263" : "#BDBDBD",
-              cursor: isFormValid() ? "pointer" : "not-allowed",
-            }}
+            className="submit-button"
             disabled={!isFormValid()}
           >
             Login
@@ -147,63 +127,17 @@ const Login = () => {
         </form>
 
         {/* Footer */}
-        <p style={{ fontSize: "0.8vw", marginTop: "2vw", color: "#777" }}>
-          Don't have an account? <span style={{ color: "#28A263", borderBottom: "2px solid #28A263", cursor: "pointer" }}>Sign up</span>
+        <p className="footer-text">
+          Don't have an account? <span onClick={handleSignup} className="sign-up-link">Sign up</span>
         </p>
       </div>
 
       {/* Right Side - Image Section */}
-      <div style={{
-        width: "40%",
-        height: "100%"
-      }}>
-        <img style={{ width: "100%", height: "100%" }} src={woman} alt="" />
+      <div className="image-section">
+        <img src={woman} alt="Woman" />
       </div>
     </div>
   );
-};
-
-// Custom Toast Styles
-const successToastStyle = {
-  display: "flex",
-  alignItems: "center",
-  backgroundColor: "#28A745",
-  color: "white",
-  padding: "10px 15px",
-  borderRadius: "5px",
-  fontWeight: "bold",
-};
-
-const errorToastStyle = {
-  display: "flex",
-  alignItems: "center",
-  backgroundColor: "#DC3545",
-  color: "white",
-  padding: "10px 15px",
-  borderRadius: "5px",
-  fontWeight: "bold",
-};
-
-// Input Style
-const inputStyle = {
-  width: "100%",
-  padding: "1vw",
-  fontSize: "1vw",
-  backgroundColor: "#E0E2D9",
-  border: "1px solid #ccc",
-  borderRadius: "5px"
-};
-
-// Button Style
-const buttonStyle = {
-  width: "100%",
-  padding: "1vw",
-  marginTop: "3vw",
-  marginLeft: "1vw",
-  fontSize: "1.2vw",
-  color: "white",
-  border: "none",
-  borderRadius: "15px",
 };
 
 export default Login;

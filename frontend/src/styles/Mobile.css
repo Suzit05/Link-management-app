@@ -1,0 +1,155 @@
+/* mobile.css */
+
+/* General Styles */
+.mobile-container {
+    flex: 0.3;
+    border-radius: 1vw;
+    text-align: center;
+
+}
+
+.mobile-inner {
+    width: 16vw;
+    height: 38vw;
+    border: 1vw solid black;
+    border-radius: 5vw;
+    padding: 0;
+    background-color: var(--theme-background-color);
+}
+
+/* Mobile Banner */
+.mobile-banner {
+    width: 100%;
+    height: 12vw;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--banner-color, #342B26);
+    margin: 0;
+    padding: 0;
+    border-radius: 3.9vw;
+}
+
+.dp {
+    align-items: center;
+    justify-content: center;
+    margin-top: 4vw;
+    margin-left: 5vw;
+    border-radius: 50%;
+    height: 12vh;
+    width: 5vw;
+    background-image: var(--profile-image);
+    background-size: cover;
+    background-position: center;
+}
+
+.profile-title {
+    font-size: 1vw;
+    color: white;
+}
+
+/* Link and Shop Buttons */
+.tab-buttons {
+    width: fit-content;
+    margin-left: 3.8vw;
+    margin-top: 1vw;
+    display: flex;
+    gap: 0;
+    background-color: #ddd;
+    border-radius: 2vw;
+    height: 2.2vw;
+
+}
+
+.tab-button {
+    border: none;
+    border-radius: 2vw;
+    padding: 0.6vw 1.5vw;
+    cursor: pointer;
+
+}
+
+.tab-button.active {
+    background-color: #1DA35E;
+
+}
+
+.tab-button.inactive {
+    background-color: #ddd;
+}
+
+/* Links and Shop Items */
+.links-container {
+    max-height: 15vw;
+    overflow-x: auto;
+    overflow-y: auto;
+    padding-right: 0.5vw;
+    padding: 1vw;
+    scrollbar-width: none;
+    /* Hides scrollbar in Firefox */
+    -ms-overflow-style: none;
+    /* Hides scrollbar in IE/Edge */
+}
+
+.links-container::-webkit-scrollbar {
+    display: none;
+    /* Hides scrollbar in WebKit browsers (Chrome, Safari, etc.) */
+}
+
+.layout-style {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5vw;
+    width: 100%;
+}
+
+.layout-style.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1vw;
+}
+
+.layout-style.stack {
+    flex-direction: column;
+    gap: 0.8vw;
+}
+
+.link-button {
+    width: 18vw;
+    height: 12vw;
+    font-size: 1vw;
+    background-color: var(--button-color);
+    color: var(--button-font-color);
+    border: none;
+    border-radius: 0.5vw;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.link-button.grid {
+    width: 7vw;
+    height: 3vw;
+    font-size: 0.9vw;
+}
+
+.link-button.stack {
+    width: 90%;
+    height: 3.5vw;
+    border-radius: 1vw;
+}
+
+/* CTA Button */
+.cta-button {
+    margin-top: 2vw;
+    padding: 0.5vw;
+    width: 80%;
+    background-color: #1DA35E;
+    color: #fff;
+    border: none;
+    border-radius: 1vw;
+    cursor: pointer;
+}

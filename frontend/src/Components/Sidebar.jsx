@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import sparklogo from "../assets/images/sparklogo.png";
 import { UserContext } from "../Context/UserContext";
+import "../styles/sidebar.css";
 
 const Sidebar = () => {
     const { user } = useContext(UserContext); // Get user data from context
@@ -17,28 +18,23 @@ const Sidebar = () => {
     ];
 
     return (
-        <div style={{ width: "18%", backgroundColor: "#fff", padding: "2vw", borderRight: "1px solid #ddd" }}>
-            <div style={{ display: "flex", alignItems: "center", marginBottom: "2vw" }}>
-                <img src={sparklogo} alt="Spark Logo" style={{ width: "6vw", marginRight: "1vw" }} />
+        <div className="sidebar-container">
+            {/* Logo Section */}
+            <div className="logo-section">
+                <img src={sparklogo} alt="Spark Logo" className="logo" />
             </div>
-            <ul style={{ listStyle: "none", padding: 0, fontSize: "1.2vw" }}>
+
+            {/* Sidebar Items */}
+            <ul className="sidebar-list">
                 {sidebarItems.map((item) => {
                     const isActive = location.pathname === item.path;
                     return (
                         <li
                             key={item.path}
                             onClick={() => navigate(item.path)}
-                            style={{
-                                padding: "1vw 0",
-                                cursor: "pointer",
-                                color: isActive ? "#1DA35E" : "grey",
-                                backgroundColor: isActive ? "#F3F3F1" : "transparent",
-                                display: "flex",
-                                alignItems: "center",
-                                gap: "0.7vw",
-                            }}
+                            className={`sidebar-item ${isActive ? "active" : ""}`}
                         >
-                            <i className={item.icon} style={{ fontSize: "1.2vw" }}></i>
+                            <i className={item.icon}></i>
                             {item.name}
                         </li>
                     );
@@ -46,8 +42,8 @@ const Sidebar = () => {
             </ul>
 
             {/* User Profile Section */}
-            <div style={{ position: "absolute", bottom: "2vw", display: "flex", alignItems: "center", border: "2px solid black", borderRadius: "3vw", padding: "1vw" }}>
-                <span style={{ fontSize: "1vw" }}>{user?.firstName} {user?.lastName}</span>
+            <div className="user-profile">
+                <span className="user-name">{user?.firstName} {user?.lastName}</span>
             </div>
         </div>
     );
