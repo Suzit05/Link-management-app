@@ -1,7 +1,7 @@
 
 
 # Link Management Platform
-{https://link-management-app.vercel.app/}
+https://link-management-app.vercel.app
 
 A modern and user-friendly platform for managing links, profiles, and appearances. Built with React, Node.js, and MongoDB.
 
