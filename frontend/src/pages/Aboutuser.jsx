@@ -4,7 +4,7 @@ import woman from "../assets/images/woman.png";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaCheckCircle, FaExclamationTriangle } from "react-icons/fa";
-import "../styles/aboutuser.css";
+import "../styles/Aboutuser.css";
 
 const Aboutuser = () => {
     const [username, setUsername] = useState("");

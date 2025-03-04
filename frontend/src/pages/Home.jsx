@@ -4,7 +4,7 @@ import greenboxes from '../assets/images/greenboxes.png'
 import faces from "../assets/images/faces.png"
 import flower from "../assets/images/flower.png"
 import sparklogo from "../assets/images/sparklogo.png"
-import { Navigate, useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 
 const Home = () => {
     const navigate = useNavigate()
@@ -375,7 +375,7 @@ const Home = () => {
                             display: "flex",
                             justifyContent: 'space-between',
                             alignItems: "center",
-                            alignItems: "center"
+
                         }}>
                             {/* Acknowledgement Text */}
                             <p style={{

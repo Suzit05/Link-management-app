@@ -2,7 +2,7 @@ import React from 'react';
 import { useProfile } from "../Context/ProfileContext";
 import { useAppearance } from '../Context/AppearanceContext';
 import { useAnalytics } from '../Context/AnalyticsContext';
-import "../styles/mobile.css";
+import "../styles/Mobile.css";
 
 const Mobile = () => {
     const { profile } = useProfile();

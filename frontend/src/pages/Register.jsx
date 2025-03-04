@@ -4,7 +4,7 @@ import woman from "../assets/images/woman.png";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaCheckCircle, FaExclamationTriangle } from "react-icons/fa";
-import "../styles/register.css";
+import "../styles/Register.css";
 
 const Register = () => {
     const [formData, setFormData] = useState({

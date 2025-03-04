@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import "../styles/modal.css";
+import "../styles/Modal.css";
 
 const Modal = ({ isOpen, onClose, activeTab, setActiveTab, onSave }) => {
     const modalRef = useRef(null);

@@ -5,7 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaCheckCircle, FaExclamationTriangle } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
-import "../styles/login.css";
+import "../styles/Login.css";
 
 const Login = () => {
   const [formData, setFormData] = useState({

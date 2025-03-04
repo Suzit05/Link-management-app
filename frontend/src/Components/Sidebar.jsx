@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import sparklogo from "../assets/images/sparklogo.png";
 import { UserContext } from "../Context/UserContext";
-import "../styles/sidebar.css";
+import "../styles/Sidebar.css";
 
 const Sidebar = () => {
     const { user } = useContext(UserContext); // Get user data from context
