@@ -3,10 +3,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { UserProvider } from './Context/UserContext';
 import { ProfileProvider } from './Context/ProfileContext';
 import { AppearanceProvider } from './Context/AppearanceContext';
-import Home from './pages/home'
+import Home from './pages/Home';
 import Login from './pages/Login'
 import Aboutuser from './pages/Aboutuser'
-import Register from './pages/register'
+import Register from './pages/Register';
 import Links from './pages/Links'
 import Appearance from './pages/Appearance'
 import Analytics from './pages/Analytics'
