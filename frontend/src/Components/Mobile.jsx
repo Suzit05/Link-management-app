@@ -1,79 +1,128 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useProfile } from "../Context/ProfileContext";
 import { useAppearance } from '../Context/AppearanceContext';
 import { useAnalytics } from '../Context/AnalyticsContext';
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 import "../styles/Mobile.css";
 
 const Mobile = () => {
     const { profile } = useProfile();
-    const userId = profile?._id || profile?.userId; // Adjust this based on how user data is stored
     const { profileImage, bannerColor, profileTitle, links = [], Shop = [] } = profile;
-    const { linkCount, shopCount, setlinkCount, setShopCount, totalCount, ctaCount, setctaCount } = useAnalytics(); // Use analytics
+    const { setlinkCount, setShopCount, setctaCount } = useAnalytics();
     const { appearance, buttonColor, buttonFontColor, themeBackgroundColor } = useAppearance();
     const { layout } = appearance;
 
-    console.log("Current layout type:", layout.type);
-    console.log("Current theme background color:", themeBackgroundColor);
-
     const layoutType = layout.type;
+    const mobileRef = useRef(null);
 
-    const linkCounter = () => {
-        setlinkCount(prevCount => prevCount + 1); // Use functional update
-        console.log(linkCount);
-        console.log(`totalcount:${totalCount}`);
+    const linkCounter = () => setlinkCount(prev => prev + 1);
+    const shopCounter = () => setShopCount(prev => prev + 1);
+    const ctaCounter = () => setctaCount(prev => prev + 1);
+
+    // Normalize URL
+    const normalizeUrl = (url) => {
+        if (!url.startsWith("http://") && !url.startsWith("https://")) {
+            return `https://${url}`;
+        }
+        return url;
     };
 
-    const shopCounter = () => {
-        setShopCount(prevCount => prevCount + 1); // Use functional update
-        console.log(shopCount);
-    };
+    // 🔹 SHARE AS SINGLE-PAGE BEAUTIFUL PDF
+    const handleShareAsPDF = async () => {
+        const element = mobileRef.current;
 
-    const ctaCounter = () => {
-        setctaCount(prevCount => prevCount + 1);
-    };
+        const canvas = await html2canvas(element, {
+            scale: 2,
+            useCORS: true
+        });
 
-    // Apply layout styles dynamically
-    const layoutStyle = {
-        display: layoutType === "carousel" ? "flex" : layoutType === "grid" ? "grid" : "flex",
-        flexDirection: layoutType === "carousel" ? "row" : layoutType === "stack" ? "column" : "initial",
-        alignItems: "center",
-        justifyContent: layoutType === "carousel" ? "center" : "initial",
-        gap: layoutType === "grid" ? "1vw" : layoutType === "carousel" ? "0.5vw" : "0.8vw",
-        gridTemplateColumns: layoutType === "grid" ? "repeat(2, 1fr)" : "none",
-        width: "100%",
-    };
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jsPDF("p", "mm", "a4");
 
-    const buttonStyle = {
-        width: layoutType === "carousel" ? "18vw" : layoutType === "grid" ? "7vw" : "90%",
-        height: layoutType === "carousel" ? "12vw" : layoutType === "grid" ? "3vw" : "3.5vw",
-        fontSize: layoutType === "carousel" ? "1vw" : layoutType === "grid" ? "0.9vw" : "1vw",
-        backgroundColor: buttonColor,  // ✅ Dynamic color from context
-        color: buttonFontColor,  // ✅ Dynamic font color from context
-        border: "none",
-        borderRadius: layoutType === "stack" ? "1vw" : "0.5vw",
-        textAlign: "center",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        cursor: "pointer"
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const pageHeight = pdf.internal.pageSize.getHeight();
+
+        /* ---------- TITLE ---------- */
+        let y = 15;
+        pdf.setFontSize(18);
+        pdf.text(profileTitle || "Profile", pageWidth / 2, y, { align: "center" });
+
+        /* ---------- MOBILE IMAGE ---------- */
+        const imageScale = 0.40; // smaller to leave space for links
+        const imgWidth = pageWidth * imageScale;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        const x = (pageWidth - imgWidth) / 2;
+        y += 8;
+
+        pdf.addImage(imgData, "PNG", x, y, imgWidth, imgHeight);
+        y += imgHeight + 10; // move below image
+
+        /* ---------- LINKS ---------- */
+        pdf.setFontSize(14);
+        pdf.text("click on the Links:", 10, y);
+        y += 6;
+        pdf.setFontSize(12);
+
+        links.forEach(link => {
+            if (link.title && link.url) {
+                const text = `• ${link.title}`;
+                const url = normalizeUrl(link.url);
+
+                pdf.text(text, 12, y);
+                pdf.link(12, y - 5, pdf.getTextDimensions(text).w, 6, { url });
+
+                y += 6;
+            }
+        });
+
+        /* ---------- SHOP ---------- */
+        if (Shop.length) {
+            y += 8;
+            pdf.setFontSize(14);
+            pdf.text("Shop", 10, y);
+            y += 6;
+            pdf.setFontSize(12);
+
+            Shop.forEach(item => {
+                if (item.title && item.url) {
+                    const text = `• ${item.title}`;
+                    const url = normalizeUrl(item.url);
+
+                    pdf.text(text, 12, y);
+                    pdf.link(12, y - 5, pdf.getTextDimensions(text).w, 6, { url });
+
+                    y += 6;
+                }
+            });
+        }
+
+        pdf.save("profile-share.pdf");
     };
 
     return (
         <div className="mobile-container">
-            <div className="mobile-inner" style={{ backgroundColor: themeBackgroundColor }}>
-                {/* Mobile Banner */}
+            <div
+                className="mobile-inner"
+                style={{ backgroundColor: themeBackgroundColor }}
+                ref={mobileRef}
+            >
+                {/* Banner */}
                 <div className="mobile-banner" style={{ backgroundColor: bannerColor || "#342B26" }}>
-                    <div className="dp" style={{ backgroundImage: profileImage ? `url(${profileImage})` : "none" }}></div>
+                    <div
+                        className="dp"
+                        style={{ backgroundImage: profileImage ? `url(${profileImage})` : "none" }}
+                    />
                     <h3 className="profile-title">{profileTitle || "profile"}</h3>
                 </div>
 
-                {/* Link and Shop Buttons */}
+                {/* Tabs */}
                 <div className="tab-buttons">
                     <button className="tab-button active">Link</button>
                     <button className="tab-button inactive">Shop</button>
                 </div>
 
-                {/* Links and Shop Items */}
+                {/* Content */}
                 <div className="links-container">
                     <div className={`layout-style ${layoutType}`}>
                         {links.map((link, index) => (
@@ -87,6 +136,7 @@ const Mobile = () => {
                             </button>
                         ))}
                     </div>
+
                     <div className={`layout-style ${layoutType}`}>
                         {Shop.map((shop, index) => (
                             <button
@@ -101,9 +151,18 @@ const Mobile = () => {
                     </div>
                 </div>
 
-                {/* CTA Button */}
+                {/* CTA */}
                 <button className="cta-button" onClick={ctaCounter}>
                     Get Connected
+                </button>
+
+                {/* SHARE */}
+                <button
+                    className="cta-button"
+                    style={{ marginTop: "1vw" }}
+                    onClick={handleShareAsPDF}
+                >
+                    Share
                 </button>
             </div>
         </div>
