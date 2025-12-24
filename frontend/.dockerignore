@@ -1,0 +1,12 @@
+# Node dependencies (never copy)
+node_modules
+
+# Vite build output (generated inside Docker)
+dist
+
+# Vercel config & cache (not needed in Docker)
+.vercel
+
+# Environment files (security)
+.env
+.env.*
