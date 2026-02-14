@@ -19,7 +19,7 @@ const Settings = () => {
         const fetchUser = async () => {
             try {
                 const token = localStorage.getItem("token");
-                const res = await axios.get("http://localhost:3000/api/user", {
+                const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/user`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 const { firstName, lastName, email } = res.data;
@@ -55,7 +55,7 @@ const Settings = () => {
         try {
             const token = localStorage.getItem("token");
             await axios.put(
-                "http://localhost:3000/api/user",
+                `${import.meta.env.VITE_BACKEND_URL}/api/user`,
                 {
                     firstName: formData.firstName,
                     lastName: formData.lastName,

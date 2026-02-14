@@ -19,7 +19,7 @@ const Links = () => {
     useEffect(() => {
         const fetchProfileData = async () => {
             try {
-                const response = await fetch('http://localhost:3000/api/profile/me', {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/profile/me`, {
                     method: 'GET',
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -94,7 +94,7 @@ const Links = () => {
     // Handle save button click
     const handleSaveProfile = async () => {
         try {
-            const response = await fetch('http://localhost:3000/api/profile', {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/profile`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

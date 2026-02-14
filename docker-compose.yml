@@ -15,7 +15,7 @@ services:
     build: ./frontend
     container_name: link-frontend
     ports:
-      - "5173:80"
+      - "80:80" #localhost-->nginx
     depends_on:
       - backend
 

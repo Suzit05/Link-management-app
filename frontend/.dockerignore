@@ -7,6 +7,4 @@ dist
 # Vercel config & cache (not needed in Docker)
 .vercel
 
-# Environment files (security)
-.env
-.env.*
+

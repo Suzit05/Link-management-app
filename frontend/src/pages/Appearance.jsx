@@ -22,7 +22,7 @@ const Appearance = () => {
     useEffect(() => {
         const fetchProfileData = async () => {
             try {
-                const response = await fetch('http://localhost:3000/api/profile/me', {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/profile/me`, {
                     method: 'GET',
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -64,7 +64,7 @@ const Appearance = () => {
     useEffect(() => {
         const fetchAppearanceData = async () => {
             try {
-                const response = await fetch('http://localhost:3000/api/appearance/me', {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/appearance/me`, {
                     method: 'GET',
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -88,7 +88,7 @@ const Appearance = () => {
     // Handle saving appearance data
     const handleSaveAppearance = async () => {
         try {
-            const response = await fetch('http://localhost:3000/api/appearance', {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/appearance`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -115,7 +115,7 @@ const Appearance = () => {
 
     const saveAppearanceData = async (updatedAppearance) => {
         try {
-            const response = await fetch('http://localhost:3000/api/appearance', {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/appearance`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
