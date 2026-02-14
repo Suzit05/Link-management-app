@@ -35,6 +35,7 @@ jobs:
 
     - name: Build Frontend Image
       run: |
+        echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" > ./frontend/.env
         docker build -t frontend ./frontend
         docker tag frontend:latest ${{ secrets.ECR_FRONTEND }}:latest
 
