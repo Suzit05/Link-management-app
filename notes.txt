@@ -1,0 +1,7 @@
+🧠 VERY IMPORTANT CONCEPT (Most people mess this up in DevOps interviews)
+File	Use
+Ansible25.pem	PRIVATE KEY (used to SSH)
+Ansible25.pub	PUBLIC KEY (uploaded to AWS via Terraform)
+
+AWS stores public key inside EC2
+You SSH using private key
