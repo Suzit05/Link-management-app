@@ -35,9 +35,12 @@ jobs:
 
     - name: Build Frontend Image
       run: |
-        echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" > ./frontend/.env
+        echo "VITE_BACKEND_URL=${{ secrets.VITE_BACKEND_URL }}" > ./frontend/.env
         docker build -t frontend ./frontend
         docker tag frontend:latest ${{ secrets.ECR_FRONTEND }}:latest
 
     - name: Push Frontend Image
       run: docker push ${{ secrets.ECR_FRONTEND }}:latest
+
+
+      #Implemented CI/CD pipeline using GitHub Actions to build and push Dockerized MERN application images to AWS ECR.
