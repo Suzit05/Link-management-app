@@ -1,69 +1,103 @@
 
 
-# 🔗 Link Management App (MERN + Docker)
+# 🔗 Cloud-Native Link Management Application
 
-A full-stack **Link Management Application** built using the **MERN stack**, designed to allow users to register, manage profiles, and organize links efficiently.
-The project is fully **Dockerized** to demonstrate containerization, service isolation, and environment-based deployment.
+### Dockerized MERN App with CI/CD & Terraform-Based AWS Deployment
 
 ---
 
-## 🚀 Tech Stack
+## 📌 Project Overview
 
-### Frontend
+This project is a **cloud-native full-stack Link Management Application** developed using the **MERN stack (MongoDB, Express.js, React.js, Node.js)** and deployed using modern **DevOps practices**.
 
-* React (Vite)
-* HTML, CSS, JavaScript
-* Fetch API
+The application allows users to create customizable profile pages containing multiple links and provides analytics such as:
 
-### Backend
+* Unique views
+* Click tracking
+* Device type
+* Geographic location
+* Referral sources
 
-* Node.js
-* Express.js
+The project has been containerized and deployed on AWS using Infrastructure as Code and CI/CD pipelines.
+
+---
+
+## ⚙️ Tech Stack
+
+### 🧩 Application Stack
+
 * MongoDB
-* JWT Authentication
+* Express.js
+* React.js (Vite)
+* Node.js
 
-### DevOps / Tools
+### 🚀 DevOps & Cloud Tools
 
 * Docker
 * Docker Compose
-* NGINX (for frontend production build)
+* GitHub Actions (CI/CD)
+* AWS EC2
+* AWS Elastic Container Registry (ECR)
+* Terraform (Infrastructure as Code)
+* Nginx
 
 ---
 
-## 📂 Project Structure
+## 🐳 Containerization
 
-```
-link-management-app/
-│
-├── frontend/
-│   ├── Dockerfile
-│   ├── .dockerignore
-│   ├── src/
-│
-├── backend/
-│   ├── Dockerfile
-│   ├── .dockerignore
-│   ├── src/
-│   ├── .env
-│
-├── docker-compose.yml
-├── .env
-└── README.md
-```
+* Frontend, Backend, and MongoDB services were containerized using Docker.
+* Multi-stage Docker builds were implemented for optimized production-ready frontend images.
+* Docker Compose was used to enable internal networking and persistent storage for MongoDB.
 
 ---
 
-# 🧪 Running the Project WITHOUT Docker (Local Development)
+## 🔄 CI/CD Pipeline
 
-### ✅ Prerequisites
+A CI/CD pipeline was implemented using **GitHub Actions** that:
 
-* Node.js (v18+)
-* MongoDB (Local or Atlas)
-* npm
+1. Automatically triggers on every push to the `main` branch.
+2. Builds Docker images for frontend and backend services.
+3. Pushes the images to **AWS ECR**.
+4. Prepares container images for automated deployment.
 
 ---
 
-### 🔹 Backend Setup
+## ☁️ Cloud Deployment (AWS)
+
+* Docker images are stored in **AWS Elastic Container Registry (ECR)**.
+* AWS EC2 instance is provisioned using **Terraform**.
+* IAM Roles are attached to EC2 to enable secure access to ECR without storing credentials.
+* Security Groups are configured to allow:
+
+  * SSH (Port 22)
+  * HTTP (Port 80)
+  * Backend API (Port 3000)
+
+The EC2 instance pulls the latest Docker images from ECR and runs:
+
+* MongoDB Container
+* Backend API Container
+* Frontend Nginx Container
+
+---
+
+## 🧱 Infrastructure as Code (Terraform)
+
+Terraform is used to automate:
+
+* EC2 Instance Provisioning
+* Security Group Configuration
+* IAM Role Attachment for ECR Access
+* Key Pair Integration
+* Application Deployment via User Data Scripts
+
+This enables repeatable and version-controlled infrastructure setup aligned with DevOps best practices.
+
+---
+
+## 🛠️ Local Development Setup (Without Docker)
+
+### Backend
 
 ```bash
 cd backend
@@ -71,15 +105,7 @@ npm install
 npm start
 ```
 
-Backend runs on:
-
-```
-http://localhost:3000
-```
-
----
-
-### 🔹 Frontend Setup
+### Frontend
 
 ```bash
 cd frontend
@@ -87,135 +113,71 @@ npm install
 npm run dev
 ```
 
-Frontend runs on:
-
-```
-http://localhost:5173
-```
-
 ---
 
-### 🔹 Environment Variables (Backend)
-
-Create `backend/.env`:
-
-```env
-PORT=3000
-MONGODB_URI=<your_mongodb_uri>
-SECRET_KEY=<your_secret>
-```
-
----
-
-# 🐳 Running the Project WITH Docker (Recommended)
-
-This setup runs:
-
-* Frontend (NGINX container)
-* Backend (Node.js container)
-* MongoDB (Container + Volume)
-
-All services start with **one command**.
-
----
-
-## ✅ Prerequisites
-
-* Docker
-* Docker Compose
-
----
-
-## 🔹 Root Environment File (Docker)
-
-Create `.env` in project root:
-
-```env
-PORT=3000
-MONGO_URI=mongodb://mongo:27017/linkapp
-SECRET_KEY=your_secret_key
-NODE_ENV=production
-```
-
----
-
-## 🔹 Start Application (Docker)
-
-From project root:
+## 🐳 Run Locally Using Docker
 
 ```bash
-docker compose up --build
+docker-compose up --build
 ```
 
 ---
 
-## 🌐 Access the App
+## 📂 Environment Variables
 
-| Service  | URL                                            |
-| -------- | ---------------------------------------------- |
-| Frontend | [http://localhost:5173](http://localhost:5173) |
-| Backend  | [http://localhost:3000](http://localhost:3000) |
-| MongoDB  | Internal (Docker network)                      |
-
----
-
-## 🧠 Docker Architecture
+Backend `.env`:
 
 ```
-Browser
-   |
-Frontend (NGINX Container)
-   |
-Backend (Node.js Container)
-   |
-MongoDB (Docker Container + Volume)
+PORT=3000
+MONGODB_URI=<your-mongodb-uri>
+SECRET_KEY=<your-secret-key>
 ```
 
-* Containers communicate using **Docker service names**
-* MongoDB data persists using Docker volumes
-* Frontend uses a **production-ready multi-stage build**
+Frontend `.env` (during deployment via CI/CD):
+
+```
+VITE_BACKEND_URL=http://<EC2_PUBLIC_IP>:3000
+```
 
 ---
 
-## 🔐 Security & Best Practices
+## 🚧 Upcoming DevOps Enhancements
 
-* `.dockerignore` used to reduce image size
-* Secrets injected via environment variables
-* No secrets committed to repository
-* MongoDB uses Docker volume for persistence
-
----
-
-## 📌 Key Learnings
-
-* Dockerizing a MERN application
-* Multi-stage Docker builds
-* Container-to-container communication
-* Environment-based configuration
-* Debugging Docker + NGINX routing issues
+* Nginx Reverse Proxy
+* Internal Networking
+* Load Balancer
+* Kubernetes Deployment (AWS EKS)
+* Monitoring & Logging (Prometheus + Grafana)
 
 ---
 
-## 📈 Future Improvements
+## 📸 Deployment Architecture
 
-* NGINX reverse proxy for API routing
-* CI/CD pipeline (GitHub Actions)
-* Production deployment (AWS / EC2 / ECS)
-* Monitoring & logging
+```
+GitHub Push
+   ↓
+GitHub Actions CI/CD
+   ↓
+Docker Image Build
+   ↓
+Push to AWS ECR
+   ↓
+Terraform Provision EC2
+   ↓
+EC2 Pulls Images
+   ↓
+Mongo + Backend + Frontend Containers
+   ↓
+Application Live on AWS
+```
 
 ---
 
-## 🧾 Resume Highlight
-
-> Dockerized a MERN-based Link Management Application using Docker Compose, enabling isolated services, persistent MongoDB storage, and production-ready container builds.
-
----
-
-## 👤 Author
+## 👨‍💻 Author
 
 **Sujeet Kumar**
-
-* GitHub: [https://github.com/Suzit05](https://github.com/Suzit05)
-* LinkedIn: [www.linkedin.com/in/sujeet05kp](http://www.linkedin.com/in/sujeet05kp)
+DevOps & MERN Stack Developer
 
 ---
+
+
