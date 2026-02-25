@@ -5,3 +5,89 @@ Ansible25.pub	PUBLIC KEY (uploaded to AWS via Terraform)
 
 AWS stores public key inside EC2
 You SSH using private key
+
+
+
+-----------summary-------------------------
+
+
+---
+
+# 📌 Link Management App — DevOps Implementation Notes
+
+## Phase 0 — App Refactor
+
+* Converted hardcoded backend URLs to environment-based configuration using `VITE_BACKEND_URL`.
+* Enabled build-time API injection for production-ready deployments.
+* Made frontend cloud-deployable and container-friendly.
+
+---
+
+## Phase 1 — Dockerization
+
+* Containerized MERN stack application using Docker.
+* Created multi-stage Docker build for React (Vite) frontend.
+* Configured Nginx to serve static frontend files.
+* Dockerized Node.js + Express backend service.
+* Used MongoDB as a separate container with persistent storage.
+* Enabled service-to-service communication between containers.
+
+---
+
+## Phase 2 — CI/CD Pipeline
+
+* Implemented automated CI/CD using GitHub Actions.
+* Pipeline builds frontend and backend Docker images on every push to `main`.
+* Injects production environment variables securely via GitHub Secrets.
+* Automatically tags and pushes images to AWS ECR.
+
+---
+
+## Phase 3 — AWS Container Registry
+
+* Created private repositories in Amazon Elastic Container Registry (ECR).
+* Stored and managed frontend and backend container images.
+* Used IAM-based authentication for secure image push/pull.
+* Enabled cloud-hosted container deployment workflow.
+
+---
+
+## Phase 4 — Infrastructure as Code (Terraform)
+
+* Provisioned EC2 instance using Terraform.
+* Created security groups for SSH (22), HTTP (80), and backend (3000).
+* Attached IAM instance profile for ECR access.
+* Automated installation of Docker and AWS CLI via user data script.
+* Pulled and deployed MongoDB, backend, and frontend containers on instance startup.
+
+---
+
+## Phase 5 — Runtime Configuration
+
+* Configured dynamic API URL injection using GitHub Secrets.
+* Rebuilt frontend during CI for environment-specific deployments.
+* Resolved CORS and Same-Origin Policy issues in production setup.
+
+---
+
+## Tools & Technologies Used
+
+* Docker
+* Nginx
+* GitHub Actions
+* AWS EC2
+* AWS ECR
+* Terraform
+* IAM Roles
+* MongoDB
+* Node.js
+* React (Vite)
+
+---
+
+## Deployment Workflow
+
+Code Push → CI/CD Pipeline → Docker Build → Push to ECR → Terraform Apply → EC2 Provisioned → Containers Pulled → Application Live
+
+---
+
